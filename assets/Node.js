@@ -36,14 +36,7 @@ function Node (argBoard) {
 	};
 
 	this.generateNeighbors = function () {
-		var sideBoards = [
-			this.board.up(),
-			this.board.down(),
-			this.board.left(),
-			this.board.right()
-		];
-
-
+		var sideBoards = this.board.generateNeighbors();
 		var neighbors = [];
 
 		// Up node
@@ -56,24 +49,25 @@ function Node (argBoard) {
 		// Left node
 		if (sideBoards[1] !== false) {
 			var downNode = new Node(sideBoards[1]);
-			downNode.setAncestorPlayed("D");			
+			downNode.setAncestorPlayed("D");
 			neighbors.push(downNode);
 		};
 
 		// Down node
 		if (sideBoards[2] !== false) {
 			var leftNode = new Node(sideBoards[2]);
-			leftNode.setAncestorPlayed("L");			
+			leftNode.setAncestorPlayed("L");
 			neighbors.push(leftNode);
 		};
 
 		// Right node
 		if (sideBoards[3] !== false) {
 			var rightNode = new Node(sideBoards[3]);
-			rightNode.setAncestorPlayed("R");			
+			rightNode.setAncestorPlayed("R");
 			neighbors.push(rightNode);
 		};
 
+		// Shared properties
 		for (var i = 0; i < neighbors.length; i++) {
 			neighbors[i].setAncestor(this);
 			neighbors[i].setCost(this.cost + 1);

@@ -13,7 +13,7 @@ function Board (squareArray) {
 	// Static values
 	Board.BOARD_SIZE = 3;
 	Board.BOARD_LENGTH = Board.BOARD_SIZE*Board.BOARD_SIZE;
-	Board.FINAL_STATE = [1,2,3,4,5,6,7,8,0];
+	Board.FINAL_STATE = [1, 2, 3, 4, 5, 6, 7, 8, 0];
 
 	// Attributes
 	var boardArray;
@@ -58,7 +58,7 @@ function Board (squareArray) {
 			(j < 0) ||
 			(i >= Board.BOARD_SIZE) ||
 			(j >= Board.BOARD_SIZE)) {
-			throw "Board.get(i,j): Out of board!";
+			return false;
 		};
 
 		return this.boardArray[i*Board.BOARD_SIZE + j];
@@ -89,55 +89,115 @@ function Board (squareArray) {
 
 
 	///////// VALID MOVES /////////
-	// [1] - UP leads to...?
-	this.up = function () {
-		var square = this.find(0);
+	this.generateNeighbors = function () {
+		var zero = this.find(0);
+		var result = [];
 
-		if (square.i > 0) {
-			var nextBoard = new Board(this.getBoard());
+		// Up
+		if (zero.i > 0) {
+			var upBoard = new Board(this.getBoard());
 
 			// Swap 0 and the upper element
-			nextBoard.setSquare(this.getSquare(square.i-1, square.j), square.i, square.j);
-			nextBoard.setSquare(0, square.i-1, square.j);
-			nextBoard.updateCompleteness();
+			upBoard.setSquare(this.getSquare(zero.i-1, zero.j), zero.i, zero.j);
+			upBoard.setSquare(0, zero.i-1, zero.j);
+			upBoard.updateCompleteness();
 
-			return nextBoard;
-		};
+			result.push(upBoard);
+		}
+		else { result.push(false); };
 
-		return false;
+		// Down
+		if (zero.i < Board.BOARD_SIZE-1) {
+			var downBoard = new Board(this.getBoard());
+
+			// Swap 0 and the upper element
+			downBoard.setSquare(this.getSquare(zero.i+1, zero.j), zero.i, zero.j);
+			downBoard.setSquare(0, zero.i+1, zero.j);
+			downBoard.updateCompleteness();
+
+			result.push(downBoard);
+		}
+		else { result.push(false); };
+
+		// Left
+		if (zero.j > 0) {
+			var leftBoard = new Board(this.getBoard());
+
+			// Swap 0 and the upper element
+			leftBoard.setSquare(this.getSquare(zero.i, zero.j-1), zero.i, zero.j);
+			leftBoard.setSquare(0, zero.i, zero.j-1);
+			leftBoard.updateCompleteness();
+
+			result.push(leftBoard);
+		}
+		else { result.push(false); };
+
+		// Right
+		if (zero.j < Board.BOARD_SIZE-1) {
+			var rightBoard = new Board(this.getBoard());
+
+			// Swap 0 and the upper element
+			rightBoard.setSquare(this.getSquare(zero.i, zero.j+1), zero.i, zero.j);
+			rightBoard.setSquare(0, zero.i, zero.j+1);
+			rightBoard.updateCompleteness();
+
+			result.push(rightBoard);
+		}
+		else { result.push(false); };
+
+		return result;
 	};
+
+
+	// // [1] - UP leads to...?
+	// this.up = function () {
+	// 	var square = this.find(0);
+
+	// 	if (square.i > 0) {
+	// 		var nextBoard = new Board(this.getBoard());
+
+	// 		// Swap 0 and the upper element
+	// 		nextBoard.setSquare(this.getSquare(square.i-1, square.j), square.i, square.j);
+	// 		nextBoard.setSquare(0, square.i-1, square.j);
+	// 		nextBoard.updateCompleteness();
+
+	// 		return nextBoard;
+	// 	};
+
+	// 	return false;
+	// };
 
 	// [2] - DOWN leads to...?
-	this.down = function () {
-		var square = this.find(0);
-		if (square.i < Board.BOARD_SIZE-1) {
-			var nextBoard = new Board(this.getBoard());
+	// this.down = function () {
+	// 	var square = this.find(0);
+	// 	if (square.i < Board.BOARD_SIZE-1) {
+	// 		var nextBoard = new Board(this.getBoard());
 
-			// Swap 0 and the upper element
-			nextBoard.setSquare(this.getSquare(square.i+1, square.j), square.i, square.j);
-			nextBoard.setSquare(0, square.i+1, square.j);
-			nextBoard.updateCompleteness();
+	// 		// Swap 0 and the upper element
+	// 		nextBoard.setSquare(this.getSquare(square.i+1, square.j), square.i, square.j);
+	// 		nextBoard.setSquare(0, square.i+1, square.j);
+	// 		nextBoard.updateCompleteness();
 
-			return nextBoard;
-		};
-		return false;
-	};
+	// 		return nextBoard;
+	// 	};
+	// 	return false;
+	// };
 
 	// [3] - LEFT leads to...?
-	this.left = function () {
-		var square = this.find(0);
-		if (square.j > 0) {
-			var nextBoard = new Board(this.getBoard());
+	// this.left = function () {
+	// 	var square = this.find(0);
+	// 	if (square.j > 0) {
+	// 		var nextBoard = new Board(this.getBoard());
 
-			// Swap 0 and the upper element
-			nextBoard.setSquare(this.getSquare(square.i, square.j-1), square.i, square.j);
-			nextBoard.setSquare(0, square.i, square.j-1);
-			nextBoard.updateCompleteness();
+	// 		// Swap 0 and the upper element
+	// 		nextBoard.setSquare(this.getSquare(square.i, square.j-1), square.i, square.j);
+	// 		nextBoard.setSquare(0, square.i, square.j-1);
+	// 		nextBoard.updateCompleteness();
 
-			return nextBoard;
-		};
-		return false;
-	};
+	// 		return nextBoard;
+	// 	};
+	// 	return false;
+	// };
 
 	// [4] - RIGHT leads to...?
 	this.right = function () {

@@ -10,14 +10,15 @@
                                       Main
 =============================================================================== */
 function main () {
-	var wys = BoardView.loadBoard();
-	var startingBoard = new Board(wys);
+	var boardModel = BoardView.loadBoard();
+	var startingBoard = new Board(boardModel);
 	var root = new Node(startingBoard);
 
-	dragNdropSettings();
 
-	
-	console.log("" + root.generateNeighbors());
+	var sides = root.generateNeighbors();
+	for (var i = 0; i < sides.length; i++) {
+		console.log(""+sides[i].getBoard());
+	};
 
 	//root.solve();
 	

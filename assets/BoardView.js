@@ -32,6 +32,16 @@ BoardView.loadBoard = function () {
 				{ squaresArray[3*y + horizontalPosition] = parseInt(pieces[i].innerHTML); };
 		};
 	};
+
+	if (squaresArray.equals([1, 2, 3, 4, 5, 6, 7, 8, 0])) {
+		console.log(true);
+		BoardView.setFinal(true);
+	}
+	else {
+		console.log(false);
+		BoardView.setFinal(false);
+	}
+
 	return squaresArray;
 };
 
@@ -48,4 +58,12 @@ BoardView.swap = function (Va, Vb) {
 	
 	sqrB.style.left = temp[0];
 	sqrB.style.top  = temp[1];
+};
+
+BoardView.setFinal = function (bool) {
+	if (bool === true)
+		document.getElementsByClassName("signal")[0].className = "signal finished";
+
+	else
+		document.getElementsByClassName("signal")[0].className = "signal";	
 };
