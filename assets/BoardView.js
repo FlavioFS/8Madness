@@ -13,7 +13,7 @@ BoardView.COORDINATES = ["20px", "140px", "260px"];
 
 // [1.1] - Returns the values of the board displayed in the page
 BoardView.loadBoard = function () {
-	var pieces = document.getElementsByClassName("piece");
+	var pieces = $(".piece");
 	var squaresArray = [1, 2, 3, 4, 5, 6, 7, 8, 0];
 	
 	// Checks all elements
@@ -33,12 +33,11 @@ BoardView.loadBoard = function () {
 		};
 	};
 
+	// Initial state of light
 	if (squaresArray.equals([1, 2, 3, 4, 5, 6, 7, 8, 0])) {
-		console.log(true);
 		BoardView.setFinal(true);
 	}
 	else {
-		console.log(false);
 		BoardView.setFinal(false);
 	}
 
@@ -47,7 +46,7 @@ BoardView.loadBoard = function () {
 
 // [1.2] - Swaps two squares
 BoardView.swap = function (Va, Vb) {
-	pieces = document.getElementsByClassName("piece");
+	pieces = $(".piece");
 	sqrA = pieces[Va];
 	sqrB = pieces[Vb];
 
@@ -61,9 +60,16 @@ BoardView.swap = function (Va, Vb) {
 };
 
 BoardView.setFinal = function (bool) {
-	if (bool === true)
-		document.getElementsByClassName("signal")[0].className = "signal finished";
+	var _signal = $(".signal");
 
-	else
-		document.getElementsByClassName("signal")[0].className = "signal";	
+	if (bool === true) {
+		_signal.addClass("finished");
+		document.getElementsByClassName('solveBtn')[0].disabled = true;
+		document.getElementsByClassName('showBtn')[0].disabled = true;
+	}
+	else {
+		_signal.removeClass("finished");
+		document.getElementsByClassName('solveBtn')[0].disabled = false;
+		document.getElementsByClassName('showBtn')[0].disabled = false;
+	};
 };

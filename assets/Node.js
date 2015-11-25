@@ -11,6 +11,9 @@
 =============================================================================== */
 // Defines the tree structure
 function Node (argBoard) {
+	// Static variables
+	Node.ARROWS = {U: "&uarr;", D: "&darr;", L: "&larr;", R: "&rarr;"};
+
 	// Attributes
 	var board = argBoard;
 	var ancestor;
@@ -29,6 +32,12 @@ function Node (argBoard) {
 	this.getCost 			= function () {return this.cost;};
 	this.getAncestorPlayed	= function () {return this.ancestorPlayed;};
 
+
+	// Override
+	this.toString = function () {
+		return this.board.toString();
+	};
+
 	
 	// Methods
 	this.evaluation = function () {
@@ -42,28 +51,28 @@ function Node (argBoard) {
 		// Up node
 		if (sideBoards[0] !== false) {
 			var upNode = new Node(sideBoards[0]);
-			upNode.setAncestorPlayed("U");
+			upNode.setAncestorPlayed(Node.ARROWS.U);
 			neighbors.push(upNode);
 		};
 
-		// Left node
+		// Down node
 		if (sideBoards[1] !== false) {
 			var downNode = new Node(sideBoards[1]);
-			downNode.setAncestorPlayed("D");
+			downNode.setAncestorPlayed(Node.ARROWS.D);
 			neighbors.push(downNode);
 		};
 
-		// Down node
+		// Left node
 		if (sideBoards[2] !== false) {
 			var leftNode = new Node(sideBoards[2]);
-			leftNode.setAncestorPlayed("L");
+			leftNode.setAncestorPlayed(Node.ARROWS.L);
 			neighbors.push(leftNode);
 		};
 
 		// Right node
 		if (sideBoards[3] !== false) {
 			var rightNode = new Node(sideBoards[3]);
-			rightNode.setAncestorPlayed("R");
+			rightNode.setAncestorPlayed(Node.ARROWS.R);
 			neighbors.push(rightNode);
 		};
 
@@ -73,7 +82,9 @@ function Node (argBoard) {
 			neighbors[i].setCost(this.cost + 1);
 		};
 
-		return neighbors.sort(Board.compare);
+
+		neighbors.sort( function (a, b) {return a.evaluation() - b.evaluation()} );
+		return neighbors;
 	};
 
 	// Constructor
@@ -81,6 +92,9 @@ function Node (argBoard) {
 };
 
 // Object comparison
-Node.compare = function (N1, N2) {
-	return Board.compare(N1.getBoard(), N2.getBoard());
-};
+// Node.compare = function (N1, N2) {
+// 	if (N1.evaluation() < N2.evaluation()) return -1;
+// 	if (N1.evaluation() > N2.evaluation()) return  1;
+
+// 	return 0;
+// };

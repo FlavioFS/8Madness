@@ -18,6 +18,7 @@ body {
 	margin-left: auto;
 	margin-right: auto;
 	margin-top: 30px;
+	border-radius: 5%;
 }
 
 /* Board */
@@ -113,13 +114,16 @@ body {
 
 
 /* Where the written solution is presented */
+fieldset {
+	margin: 0 auto;
+	max-width: 40%;
+}
+
 .solution {
 	background-color: #AAA;
 	color: black;
 	text-align: center;
 	font-family: "Comic Sans MS", cursive, sans-serif;
 	border-radius: 10px;
-	min-height: 20px;
-	max-width: 50%;
 	margin: auto;
 }

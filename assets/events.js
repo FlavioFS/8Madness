@@ -2,23 +2,10 @@
 //                    Utility                   //
 //////////////////////////////////////////////////
 function updateFinal () {
-	if (BoardView.loadBoard().equals(Board.FINAL_STATE))
+	if ( BoardView.loadBoard().equals(Board.FINAL_STATE) )
 		{ BoardView.setFinal(true); }
 	else
 		{ BoardView.setFinal(false); };
-}
-
-
-//////////////////////////////////////////////////
-//                    Buttons                   //
-//////////////////////////////////////////////////
-// Solve Button
-function solve (argument) {
-}
-
-// Show Solution
-function animate (argument) {
-	// body...
 }
 
 
@@ -39,11 +26,10 @@ function keyboard (evt) {
 		keyS 	 = 83,
 		keyD 	 = 68;
 
-	var currentBoard = new Board(BoardView.loadBoard());
+	var currentBoard = new Board( BoardView.loadBoard() );
 	var zero = currentBoard.find(0);
 
 	// Pressing Up
-	console.log(evt.keyCode);
 	if ((evt.keyCode === keyUp) || (evt.keyCode === keyW)) {	
 		var neighbor = currentBoard.getSquare(zero.i+1, zero.j);
 
@@ -76,71 +62,105 @@ function keyboard (evt) {
 	}
 
 	updateFinal();
+	delete currentBoard;
 }
 
 
 //////////////////////////////////////////////////
 //                     Mouse                    //
 //////////////////////////////////////////////////
-// Drag'n'drop
-var draggable = document.getElementsByClassName("piece");
-for (var i = 0; i < draggable.length; i++) {
-	draggable[i].addEventListener('dragstart', dragStart, false);
-	draggable[i].addEventListener('dragend', dragEnd, false);
-};
+function dragNdropSettings (argument) {
+	// Drag'n'drop
+	var draggable = $(".piece");
+	for (var i = 0; i < draggable.length; i++) {
+		draggable[i].addEventListener('dragstart', dragStart, false);
+		draggable[i].addEventListener('dragend', dragEnd, false);
+	};
 
-var dropTarget = document.getElementsByClassName("piece");
-for (var i = 0; i < dropTarget.length; i++) {
-	dropTarget[i].addEventListener('dragenter', dragEnter, false);
-	dropTarget[i].addEventListener('dragover' , dragOver , false);
-	dropTarget[i].addEventListener('dragleave', dragLeave, false);
-	dropTarget[i].addEventListener('drop'     , drop     , false);
-};
+	var dropTarget = $(".piece");
+	for (var i = 0; i < dropTarget.length; i++) {
+		dropTarget[i].addEventListener('dragenter', dragEnter, false);
+		dropTarget[i].addEventListener('dragover' , dragOver , false);
+		dropTarget[i].addEventListener('dragleave', dragLeave, false);
+		dropTarget[i].addEventListener('drop'     , drop     , false);
+	};
 
-// Event Handlers
-// Drag
-function dragStart (event) {
-	event.dataTransfer.setData("text/html", event.target.innerHTML);
-	$(event.target).addClass("dragging");
-};
+	// Event Handlers
+	// Drag
+	function dragStart (event) {
+		event.dataTransfer.setData("text/html", event.target.innerHTML);
+		$(event.target).addClass("dragging");
+	};
 
-function dragEnd (event) {
-	$(event.target).removeClass("dragging");
-};
+	function dragEnd (event) {
+		$(event.target).removeClass("dragging");
+	};
 
-// Drop
-function dragEnter (event) {
-	$(event.target).addClass("dropping");
-};
+	// Drop
+	function dragEnter (event) {
+		$(event.target).addClass("dropping");
+	};
 
-function dragOver (event) {
-	event.preventDefault();
-	return false;
-};
-
-function dragLeave (event) {
-	$(event.target).removeClass("dropping");
-};
-
-function drop (event) {
-	var data = event.dataTransfer.getData('text/html');
-	$(event.target).removeClass("dropping");
-	var targetValue = event.target.innerHTML;
-	
-	// Runs only when dropping into a different piece
-	if (targetValue != data)
-	{
-		event.dataTransfer.effectAllowed = "move";
-
-		// Swapping squares marked with "data" and "targetValue"
-		BoardView.swap(data, targetValue);
-
-		updateFinal();
-
+	function dragOver (event) {
 		event.preventDefault();
 		return false;
 	};
-	
-	event.preventDefault();
-	return true;
+
+	function dragLeave (event) {
+		$(event.target).removeClass("dropping");
+	};
+
+	function drop (event) {
+		var data = event.dataTransfer.getData('text/html');
+		$(event.target).removeClass("dropping");
+		var targetValue = event.target.innerHTML;
+		
+		// Runs only when dropping into a different piece
+		if (targetValue != data)
+		{
+			event.dataTransfer.effectAllowed = "move";
+
+			// Swapping squares marked with "data" and "targetValue"
+			BoardView.swap(data, targetValue);
+
+			updateFinal();
+
+			event.preventDefault();
+			return false;
+		};
+		
+		event.preventDefault();
+		return true;
+	};
 };
+
+//////////////////////////////////////////////////
+//                    Buttons                   //
+//////////////////////////////////////////////////
+var puzzle;
+
+// Solve Button
+function solve (argument) {
+	puzzle = new Problem ();
+	puzzle.solve();
+	var _solution = puzzle.getSolution();
+	console.log(_solution);
+	document.getElementsByClassName('solution')[0].innerHTML = _solution;
+}
+
+// Show Solution
+function animate (argument) {
+	//var solution = puzzle.getSolution();
+	// ...
+}
+
+
+//////////////////////////////////////////////////
+//                      Main                    //
+//////////////////////////////////////////////////
+function main () {
+	BoardView.loadBoard();
+	dragNdropSettings();
+};
+
+$(document).ready(main);

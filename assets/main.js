@@ -10,18 +10,17 @@
                                       Main
 =============================================================================== */
 function main () {
-	var boardModel = BoardView.loadBoard();
-	var startingBoard = new Board(boardModel);
-	var root = new Node(startingBoard);
+	//BoardView.loadBoard();
+	// var startingBoard = new Board(boardModel);
+	// var root = new Node(startingBoard);
 
 
-	var sides = root.generateNeighbors();
-	for (var i = 0; i < sides.length; i++) {
-		console.log(""+sides[i].getBoard());
-	};
+	// var sides = root.generateNeighbors();
+	// for (var i = 0; i < sides.length; i++) {
+	// 	//console.log(""+sides[i].getBoard());
+	// };
 
 	//root.solve();
-	
 };
 
 $(document).ready(main);
