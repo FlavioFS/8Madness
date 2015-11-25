@@ -7,7 +7,7 @@ body {
     box-sizing: border-box;         /* Opera/IE 8+ */
 }
 
-#board {
+.board {
 	position: relative;
 	width: 380px;
 	height: 380px;
@@ -53,6 +53,6 @@ body {
 	border: 4px dashed #CFC;
 }
 
-#p0 {
+.invisible {
 	opacity: 0;
 }

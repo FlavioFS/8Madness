@@ -1,3 +1,11 @@
+// Solve Button
+function solve (argument) {
+	// body...
+}
+
+// Show Solution
+
+
 // Drag'n'drop
 function dragNdropSettings () {
 	var draggable = document.getElementsByClassName("piece");

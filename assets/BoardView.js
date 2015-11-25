@@ -37,8 +37,9 @@ BoardView.loadBoard = function () {
 
 // [1.2] - Swaps two squares
 BoardView.swap = function (Va, Vb) {
-	sqrA = document.getElementById("p" + Va);
-	sqrB = document.getElementById("p" + Vb);
+	pieces = document.getElementsByClassName("piece");
+	sqrA = pieces[Va];
+	sqrB = pieces[Vb];
 
 	temp = [sqrA.style.left, sqrA.style.top];
 	

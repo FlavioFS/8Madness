@@ -9,21 +9,23 @@
 		<script type="text/javascript" src="assets/Node.js"></script>
 		<script type="text/javascript" src="assets/BoardView.js"></script>
 		<script type="text/javascript" src="assets/Problem.js"></script>
-		<script type="text/javascript" src="assets/dragNdrop.js"></script>
+		<script type="text/javascript" src="assets/events.js"></script>
 		<script type="text/javascript" src="assets/main.js"></script>
 	</head>
 
 	<body>
-		<div id="board">
-			<div id="p0" class="piece" draggable="true" style="left: 260px; top: 260px;">0</div>
-			<div id="p1" class="piece" draggable="true" style="left:  20px; top:  20px;">1</div>
-			<div id="p2" class="piece" draggable="true" style="left: 140px; top:  20px;">2</div>
-			<div id="p3" class="piece" draggable="true" style="left: 260px; top:  20px;">3</div>
-			<div id="p4" class="piece" draggable="true" style="left:  20px; top: 140px;">4</div>
-			<div id="p5" class="piece" draggable="true" style="left: 140px; top: 140px;">5</div>
-			<div id="p6" class="piece" draggable="true" style="left: 260px; top: 140px;">6</div>
-			<div id="p7" class="piece" draggable="true" style="left:  20px; top: 260px;">7</div>
-			<div id="p8" class="piece" draggable="true" style="left: 140px; top: 260px;">8</div>
+		<div class="board">
+			<div class="piece invisible" draggable="true" style="left: 260px; top: 260px;">0</div>
+			<div class="piece" draggable="true" style="left:  20px; top:  20px;">1</div>
+			<div class="piece" draggable="true" style="left: 140px; top:  20px;">2</div>
+			<div class="piece" draggable="true" style="left: 260px; top:  20px;">3</div>
+			<div class="piece" draggable="true" style="left:  20px; top: 140px;">4</div>
+			<div class="piece" draggable="true" style="left: 140px; top: 140px;">5</div>
+			<div class="piece" draggable="true" style="left: 260px; top: 140px;">6</div>
+			<div class="piece" draggable="true" style="left:  20px; top: 260px;">7</div>
+			<div class="piece" draggable="true" style="left: 140px; top: 260px;">8</div>
 		</div>
+		<button onclick="solve()">Solve</button>
+		<button onclick="">Show solution</button>
 	</body>
 </html>
