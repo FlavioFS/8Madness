@@ -21,16 +21,16 @@ function Node (argBoard) {
 	var _ancestorPlayed;
 
 	// Set
-	this.setBoard			= function (newBoard)			{ _board		  = newBoard;		   }
-	this.setCost			= function (newCost)			{ _cost			  = newCost;		   }
-	this.setAncestor		= function (newAncestor)		{ _ancestor		  = newAncestor;	   }
-	this.setAncestorPlayed	= function (newAncestorPlayed)	{ _ancestorPlayed = newAncestorPlayed; }
+	this.setBoard			= function (newBoard)			{ _board		  = newBoard;		   };
+	this.setCost			= function (newCost)			{ _cost			  = newCost;		   };
+	this.setAncestor		= function (newAncestor)		{ _ancestor		  = newAncestor;	   };
+	this.setAncestorPlayed	= function (newAncestorPlayed)	{ _ancestorPlayed = newAncestorPlayed; };
 
 	// Get
-	this.getBoard			= function () { return _board.slice();	}
-	this.getCost 			= function () { return _cost;			}
-	this.getAncestor		= function () { return _ancestor;		}
-	this.getAncestorPlayed	= function () { return _ancestorPlayed;	}
+	this.getBoard			= function () { return _board.slice();	};
+	this.getCost 			= function () { return _cost;			};
+	this.getAncestor		= function () { return _ancestor;		};
+	this.getAncestorPlayed	= function () { return _ancestorPlayed;	};
 
 
 	// Override

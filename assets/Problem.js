@@ -22,15 +22,15 @@ function Problem () {
 	
 	// Hidden Attributes
 	var _startingBoard = new Board(View.loadBoard());
-	var _root = new Node(this.startingBoard);
+	var _root = new Node(_startingBoard);
 	_root.setCost(0);
 	var _pQueue = [_root];
 	
 
 	// Get
-	this.solved    = function () { return _solved;			 }
-	this.solution  = function () { return _solution.slice(); }
-	this.stepCount = function () { return _steps;			 }
+	this.solved    = function () { return _solved;			 };
+	this.solution  = function () { return _solution.slice(); };
+	this.stepCount = function () { return _steps;			 };
 
 	// Private Methods
 	function sortedInsertion (insertingThis) {
@@ -72,6 +72,11 @@ function Problem () {
 
 	// Public Methods
 	this.solve = function () {
+		var _startingBoard = new Board(View.loadBoard());
+		var _root = new Node(this.startingBoard);
+		_root.setCost(0);
+		var _pQueue = [_root];
+
 		var solveBtn = $(".solveBtn")[0];
 		// solveBtn.disabled = true;
 
@@ -108,7 +113,7 @@ function Problem () {
 			newGuys = _1st.generateNeighbors();
 			counting++;
 			sortedInsertion(newGuys);
-		};
+		}
 
 		// When the whole graph
 		if ((_pQueue === []) || (counting === Problem.MAX_ITERATIONS)) {
