@@ -8,11 +8,11 @@
  */
 
 // [1]
-function BoardView () {};
-BoardView.COORDINATES = ["20px", "140px", "260px"];
+function View () {};
+View.COORDINATES = ["20px", "140px", "260px"];
 
 // [1.1] - Returns the values of the board displayed in the page
-BoardView.loadBoard = function () {
+View.loadBoard = function () {
 	var pieces = $(".piece");
 	var squaresArray = [1, 2, 3, 4, 5, 6, 7, 8, 0];
 	
@@ -21,31 +21,26 @@ BoardView.loadBoard = function () {
 		var horizontalPosition = 0;
 		
 		// Searching for the horizontal position
-		for (var x = 0; x < BoardView.COORDINATES.length; x++) {
-			if (pieces[i].style.left == BoardView.COORDINATES[x])
-				{ horizontalPosition = x; }			
+		for (var x = 0; x < View.COORDINATES.length; x++) {
+			if (pieces[i].style.left == View.COORDINATES[x]) { horizontalPosition = x; }			
 		};
 
 		// Checks "top" value for each element
-		for (var y = 0; y < BoardView.COORDINATES.length; y++) {
-			if (pieces[i].style.top  == BoardView.COORDINATES[y])
+		for (var y = 0; y < View.COORDINATES.length; y++) {
+			if (pieces[i].style.top  == View.COORDINATES[y])
 				{ squaresArray[3*y + horizontalPosition] = parseInt(pieces[i].innerHTML); };
 		};
 	};
 
 	// Initial state of light
-	if (squaresArray.equals([1, 2, 3, 4, 5, 6, 7, 8, 0])) {
-		BoardView.setFinal(true);
-	}
-	else {
-		BoardView.setFinal(false);
-	}
+	if (squaresArray.equals([1, 2, 3, 4, 5, 6, 7, 8, 0])) { View.setFinal(true); }
+	else { View.setFinal(false); }
 
 	return squaresArray;
 };
 
 // [1.2] - Swaps two squares
-BoardView.swap = function (Va, Vb) {
+View.swap = function (Va, Vb) {
 	pieces = $(".piece");
 	sqrA = pieces[Va];
 	sqrB = pieces[Vb];
@@ -59,7 +54,7 @@ BoardView.swap = function (Va, Vb) {
 	sqrB.style.top  = temp[1];
 };
 
-BoardView.setFinal = function (bool) {
+View.setFinal = function (bool) {
 	var _signal = $(".signal");
 
 	if (bool === true) {

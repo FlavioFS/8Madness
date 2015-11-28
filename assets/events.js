@@ -2,10 +2,10 @@
 //                    Utility                   //
 //////////////////////////////////////////////////
 function updateFinal () {
-	if ( BoardView.loadBoard().equals(Board.FINAL_STATE) )
-		{ BoardView.setFinal(true); }
+	if ( View.loadBoard().equals(Board.FINAL_STATE) )
+		{ View.setFinal(true); }
 	else
-		{ BoardView.setFinal(false); };
+		{ View.setFinal(false); };
 }
 
 
@@ -24,45 +24,58 @@ function keyboard (evt) {
 		keyW 	 = 87,
 		keyA 	 = 65,
 		keyS 	 = 83,
-		keyD 	 = 68;
+		keyD 	 = 68,
+		keyEnter = 13;
 
-	var currentBoard = new Board( BoardView.loadBoard() );
-	var zero = currentBoard.find(0);
 
-	// Pressing Up
-	if ((evt.keyCode === keyUp) || (evt.keyCode === keyW)) {	
-		var neighbor = currentBoard.getSquare(zero.i+1, zero.j);
+	// Pressing Return
+	// Tries to solve the puzzle
+	if ((evt.keyCode === keyEnter))
+		{ if (document.getElementsByClassName('solveBtn')[0].disabled === false) { solve()}; }
 
-		if (neighbor != false)
-			BoardView.swap(0, neighbor);
+	else {
+		var currentBoard = new Board( View.loadBoard() );
+		var zero = currentBoard.find(0);
+		
+		// Pressing W
+		// Moves a piece upwards
+		if ((evt.keyCode === keyW)) {
+			var neighbor = currentBoard.getSquare(zero.i+1, zero.j);
+
+			if (neighbor != false)
+				{ View.swap(0, neighbor); }
+		}
+
+		// Pressing S
+		// Moves a piece downwards
+		else if ((evt.keyCode === keyS)) {
+			var neighbor = currentBoard.getSquare(zero.i-1, zero.j);
+
+			if (neighbor != false)
+				View.swap(0, neighbor);
+		}
+
+		// Pressing A
+		// Moves a piece to the left
+		else if ((evt.keyCode === keyA)) {
+			var neighbor = currentBoard.getSquare(zero.i, zero.j+1);
+
+			if (neighbor != false)
+				View.swap(0, neighbor);
+		}
+
+		// Pressing D
+		// Moves a piece to the right
+		else if ((evt.keyCode === keyD)) {
+			var neighbor = currentBoard.getSquare(zero.i, zero.j-1);
+
+			if (neighbor != false)
+				View.swap(0, neighbor);
+		}
+		
+		updateFinal();
+		//delete currentBoard;
 	}
-
-	// Pressing Down
-	else if ((evt.keyCode === keyDown) || (evt.keyCode === keyS)) {
-		var neighbor = currentBoard.getSquare(zero.i-1, zero.j);
-
-		if (neighbor != false)
-			BoardView.swap(0, neighbor);
-	}
-
-	// Pressing left
-	else if ((evt.keyCode === keyLeft) || (evt.keyCode === keyA)) {
-		var neighbor = currentBoard.getSquare(zero.i, zero.j+1);
-
-		if (neighbor != false)
-			BoardView.swap(0, neighbor);
-	}
-
-	// Pressing Right
-	else if ((evt.keyCode === keyRight) || (evt.keyCode === keyD)) {
-		var neighbor = currentBoard.getSquare(zero.i, zero.j-1);
-
-		if (neighbor != false)
-			BoardView.swap(0, neighbor);
-	}
-
-	updateFinal();
-	delete currentBoard;
 }
 
 
@@ -121,7 +134,7 @@ function dragNdropSettings (argument) {
 			event.dataTransfer.effectAllowed = "move";
 
 			// Swapping squares marked with "data" and "targetValue"
-			BoardView.swap(data, targetValue);
+			View.swap(data, targetValue);
 
 			updateFinal();
 
@@ -159,7 +172,7 @@ function animate (argument) {
 //                      Main                    //
 //////////////////////////////////////////////////
 function main () {
-	BoardView.loadBoard();
+	View.loadBoard();
 	dragNdropSettings();
 };
 

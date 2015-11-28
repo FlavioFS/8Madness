@@ -15,19 +15,19 @@ function Board (squareArray) {
 	Board.BOARD_LENGTH = Board.BOARD_SIZE*Board.BOARD_SIZE;
 	Board.FINAL_STATE = [1, 2, 3, 4, 5, 6, 7, 8, 0];
 
-	// Attributes
-	var boardArray;
-	var completeness;
+	// Private Attributes
+	var _boardArray;
+	var _completeness;
 	
 	// Get
-	this.getBoardArray = function () {return this.boardArray.slice();};
-	this.getCompleteness = function () {return this.completeness;};
+	this.getBoardArray	 = function () {return _boardArray.slice();}
+	this.getCompleteness = function () {return _completeness;	   }
 
 	this.toString = function () {
 		return (
-			this.boardArray[0] + ", " + this.boardArray[1] + ", " + this.boardArray[2] + "\n " + 
-			this.boardArray[3] + ", " + this.boardArray[4] + ", " + this.boardArray[5] + "\n " + 
-			this.boardArray[6] + ", " + this.boardArray[7] + ", " + this.boardArray[8]
+			_boardArray[0] + ", " + _boardArray[1] + ", " + _boardArray[2] + "\n " + 
+			_boardArray[3] + ", " + _boardArray[4] + ", " + _boardArray[5] + "\n " + 
+			_boardArray[6] + ", " + _boardArray[7] + ", " + _boardArray[8]
 		);
 	};
 
@@ -41,7 +41,7 @@ function Board (squareArray) {
 	// [1] - Receives the value, finds it and returns the position
 	this.find = function (value) {
 		for (var k = 0; k < Board.BOARD_LENGTH; k++) {
-			if (this.boardArray[k] === value) {
+			if (_boardArray[k] === value) {
 				var remainder = k % Board.BOARD_SIZE;
 				var	quotient  = (k - remainder) / Board.BOARD_SIZE;
 
@@ -61,24 +61,24 @@ function Board (squareArray) {
 			return false;
 		};
 
-		return this.boardArray[i*Board.BOARD_SIZE + j];
+		return _boardArray[i*Board.BOARD_SIZE + j];
 	};
 
 	// [3] - Receives the linear position and returns the value
 	this.get = function (k) {
 		if ((i < 0) || (k >= Board.BOARD_LENGTH)) throw "Board.get(k): Out of board!";
 
-		return this.boardArray[k];
+		return _boardArray[k];
 	};
 
 	// [4] - Are these boards the same?
 	this.equals = function (B2) {
-		return this.boardArray.equals(B2.getBoardArray());
+		return _boardArray.equals(B2.getBoardArray());
 	};
 
 	// [5] - Compares to final state
 	this.finalState = function () {
-		return this.boardArray.equals(Board.FINAL_STATE);
+		return _boardArray.equals(Board.FINAL_STATE);
 	};
 
 
@@ -89,7 +89,7 @@ function Board (squareArray) {
 
 		// Up
 		if (zero.i > 0) {
-			var upBoard = new Board(this.boardArray);
+			var upBoard = new Board(_boardArray);
 
 			// Swap 0 and the upper element
 			upBoard.setSquare(this.getSquare(zero.i-1, zero.j), zero.i, zero.j);
@@ -102,7 +102,7 @@ function Board (squareArray) {
 
 		// Down
 		if (zero.i < Board.BOARD_SIZE-1) {
-			var downBoard = new Board(this.boardArray);
+			var downBoard = new Board(_boardArray);
 
 			// Swap 0 and the upper element
 			downBoard.setSquare(this.getSquare(zero.i+1, zero.j), zero.i, zero.j);
@@ -115,7 +115,7 @@ function Board (squareArray) {
 
 		// Left
 		if (zero.j > 0) {
-			var leftBoard = new Board(this.boardArray);
+			var leftBoard = new Board(_boardArray);
 
 			// Swap 0 and the upper element
 			leftBoard.setSquare(this.getSquare(zero.i, zero.j-1), zero.i, zero.j);
@@ -128,7 +128,7 @@ function Board (squareArray) {
 
 		// Right
 		if (zero.j < Board.BOARD_SIZE-1) {
-			var rightBoard = new Board(this.boardArray);
+			var rightBoard = new Board(_boardArray);
 
 			// Swap 0 and the upper element
 			rightBoard.setSquare(this.getSquare(zero.i, zero.j+1), zero.i, zero.j);
@@ -157,20 +157,25 @@ function Board (squareArray) {
 			(j >= Board.BOARD_SIZE)) {
 			throw "Board.get(i,j): Out of board!";
 		};
-		this.boardArray[i*Board.BOARD_SIZE + j] = value;
+		_boardArray[i*Board.BOARD_SIZE + j] = value;
 	};
 
 	// [2] - Receives a data array and sets the board with it
 	this.setBoard = function (squareArray) {
+		// Wrong size
+		if (squareArray.length !== Board.BOARD_LENGTH) throw "Board constructor: Wrong Size!";
+
 		var presenceList = [0, 0, 0, 0, 0, 0, 0, 0, 0];
 
 		for (var i = 0; i < squareArray.length; i++) presenceList[squareArray[i]]++;
 
+		// Correct size, wrong elements
 		for (var i = 0; i < presenceList.length; i++) {
 			if (presenceList[i] !== 1) throw "Board.setBoard: Invalid input array!";
 		};
-			
-		this.boardArray = squareArray.slice();
+		
+		// Everything is fine
+		_boardArray = squareArray.slice();
 		this.updateCompleteness();
 	};
 
@@ -199,11 +204,10 @@ function Board (squareArray) {
 			manhattanDist += Math.abs( remainder + quotient - square.i - square.j);
 		};
 
-		this.completeness = manhattanDist;
+		_completeness = manhattanDist;
 	};
 
 	// Constructor
-	if (squareArray.length !== Board.BOARD_LENGTH) throw "Board constructor: Wrong Size!";
 	this.setBoard(squareArray);
 };
 
