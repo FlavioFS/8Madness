@@ -40,7 +40,7 @@ function keyboard (evt) {
 		// Pressing W
 		// Moves a piece upwards
 		if ((evt.keyCode === keyW)) {
-			var neighbor = currentBoard.getSquare(zero.i+1, zero.j);
+			var neighbor = currentBoard.square(zero.i+1, zero.j);
 
 			if (neighbor != false)
 				{ View.swap(0, neighbor); }
@@ -49,7 +49,7 @@ function keyboard (evt) {
 		// Pressing S
 		// Moves a piece downwards
 		else if ((evt.keyCode === keyS)) {
-			var neighbor = currentBoard.getSquare(zero.i-1, zero.j);
+			var neighbor = currentBoard.square(zero.i-1, zero.j);
 
 			if (neighbor != false)
 				View.swap(0, neighbor);
@@ -58,7 +58,7 @@ function keyboard (evt) {
 		// Pressing A
 		// Moves a piece to the left
 		else if ((evt.keyCode === keyA)) {
-			var neighbor = currentBoard.getSquare(zero.i, zero.j+1);
+			var neighbor = currentBoard.square(zero.i, zero.j+1);
 
 			if (neighbor != false)
 				View.swap(0, neighbor);
@@ -67,7 +67,7 @@ function keyboard (evt) {
 		// Pressing D
 		// Moves a piece to the right
 		else if ((evt.keyCode === keyD)) {
-			var neighbor = currentBoard.getSquare(zero.i, zero.j-1);
+			var neighbor = currentBoard.square(zero.i, zero.j-1);
 
 			if (neighbor != false)
 				View.swap(0, neighbor);
@@ -156,7 +156,7 @@ var puzzle;
 function solve (argument) {
 	puzzle = new Problem ();
 	puzzle.solve();
-	var _solution = puzzle.getSolution();
+	var _solution = puzzle.solution();
 	console.log(_solution);
 	document.getElementsByClassName('solution')[0].innerHTML = _solution;
 }

@@ -10,6 +10,7 @@
 // [1]
 function View () {};
 View.COORDINATES = ["20px", "140px", "260px"];
+View.ARROWS = {U: "&uarr;", D: "&darr;", L: "&larr;", R: "&rarr;"};
 
 // [1.1] - Returns the values of the board displayed in the page
 View.loadBoard = function () {
@@ -22,7 +23,7 @@ View.loadBoard = function () {
 		
 		// Searching for the horizontal position
 		for (var x = 0; x < View.COORDINATES.length; x++) {
-			if (pieces[i].style.left == View.COORDINATES[x]) { horizontalPosition = x; }			
+			if (pieces[i].style.left == View.COORDINATES[x]) { horizontalPosition = x; }
 		};
 
 		// Checks "top" value for each element

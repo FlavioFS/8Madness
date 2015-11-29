@@ -11,68 +11,72 @@
 =============================================================================== */
 // Defines the tree structure
 function Node (argBoard) {
-	// Static variables
-	Node.ARROWS = {U: "&uarr;", D: "&darr;", L: "&larr;", R: "&rarr;"};
 
 	// Private Attributes
-	var _board = argBoard;
+	var _boardObj;
 	var _cost;
 	var _ancestor;
 	var _ancestorPlayed;
 
 	// Set
-	this.setBoard			= function (newBoard)			{ _board		  = newBoard;		   };
+	this.setBoard			= function (newBoard)			{ _boardObj		  = newBoard;		   };
 	this.setCost			= function (newCost)			{ _cost			  = newCost;		   };
 	this.setAncestor		= function (newAncestor)		{ _ancestor		  = newAncestor;	   };
 	this.setAncestorPlayed	= function (newAncestorPlayed)	{ _ancestorPlayed = newAncestorPlayed; };
 
 	// Get
-	this.getBoard			= function () { return _board.slice();	};
-	this.getCost 			= function () { return _cost;			};
-	this.getAncestor		= function () { return _ancestor;		};
-	this.getAncestorPlayed	= function () { return _ancestorPlayed;	};
+	this.board			= function () { return _boardObj;		};
+	this.cost 			= function () { return _cost;			};
+	this.ancestor		= function () { return _ancestor;		};
+	this.ancestorPlayed	= function () { return _ancestorPlayed;	};
 
 
 	// Override
 	this.toString = function () {
-		return _board.toString();
+		return _boardObj.toString();
 	};
 
 	
-	// Public Methods
+	// Priviledged Methods
 	this.evaluation = function () {
-		return _cost + _board.getCompleteness();
+		return _cost + _boardObj.completeness();
 	};
 
 	this.generateNeighbors = function () {
-		var sideBoards = _board.generateNeighbors();
+		var sideBoards = _boardObj.generateNeighbors();
 		var neighbors = [];
 
+		/* >>>>>>>>> IMPORTANT <<<<<<<<<
+		 *		In this model the 0 square is moving,
+		 * but in the game mechanics, the key press
+		 * moves the 0 in the opposite direction.
+		 * Therefore, the arrows must be inverted below.
+		 */
 		// Up node
 		if (sideBoards[0] !== false) {
 			var upNode = new Node(sideBoards[0]);
-			upNode._ancestorPlayed(Node.ARROWS.U);
+			upNode.setAncestorPlayed(View.ARROWS.D);
 			neighbors.push(upNode);
 		};
 
 		// Down node
 		if (sideBoards[1] !== false) {
 			var downNode = new Node(sideBoards[1]);
-			downNode._ancestorPlayed(Node.ARROWS.D);
+			downNode.setAncestorPlayed(View.ARROWS.U);
 			neighbors.push(downNode);
 		};
 
 		// Left node
 		if (sideBoards[2] !== false) {
 			var leftNode = new Node(sideBoards[2]);
-			leftNode._ancestorPlayed(Node.ARROWS.L);
+			leftNode.setAncestorPlayed(View.ARROWS.R);
 			neighbors.push(leftNode);
 		};
 
 		// Right node
 		if (sideBoards[3] !== false) {
 			var rightNode = new Node(sideBoards[3]);
-			rightNode._ancestorPlayed(Node.ARROWS.R);
+			rightNode.setAncestorPlayed(View.ARROWS.L);
 			neighbors.push(rightNode);
 		};
 

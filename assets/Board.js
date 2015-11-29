@@ -20,20 +20,20 @@ function Board (squareArray) {
 	var _completeness;
 	
 	// Get
-	this.getBoardArray	 = function () { return _boardArray.slice(); };
-	this.getCompleteness = function () { return _completeness;	     };
+	this.boardArray	 = function () { return _boardArray.slice(); };
+	this.completeness = function () { return _completeness;	     };
 
 	this.toString = function () {
 		return (
-			_boardArray[0] + ", " + _boardArray[1] + ", " + _boardArray[2] + "\n " + 
-			_boardArray[3] + ", " + _boardArray[4] + ", " + _boardArray[5] + "\n " + 
-			_boardArray[6] + ", " + _boardArray[7] + ", " + _boardArray[8]
+			"|" +  _boardArray[0] + ", " + _boardArray[1] + ", " + _boardArray[2] + "\n " + 
+					_boardArray[3] + ", " + _boardArray[4] + ", " + _boardArray[5] + "\n " + 
+					_boardArray[6] + ", " + _boardArray[7] + ", " + _boardArray[8] + "」"
 		);
 	};
 
 
 
-	// Methods
+	// Priviledged Methods
 
 	/*/////////////////////////////////////////
 				     Read-only
@@ -53,7 +53,7 @@ function Board (squareArray) {
 	};
 
 	// [2] - Receives the matrix-position and returns the value
-	this.getSquare = function (i, j) {
+	this.square = function (i, j) {
 		if ((i < 0) ||
 			(j < 0) ||
 			(i >= Board.BOARD_SIZE) ||
@@ -65,15 +65,15 @@ function Board (squareArray) {
 	};
 
 	// [3] - Receives the linear position and returns the value
-	this.get = function (k) {
-		if ((i < 0) || (k >= Board.BOARD_LENGTH)) { throw "Board.get(k): Out of board!"; }
+	// this.get = function (k) {
+	// 	if ((i < 0) || (k >= Board.BOARD_LENGTH)) { throw "Board.get(k): Out of board!"; }
 
-		return _boardArray[k];
-	};
+	// 	return _boardArray[k];
+	// };
 
 	// [4] - Are these boards the same?
 	this.equals = function (B2) {
-		return _boardArray.equals(B2.getBoardArray());
+		return _boardArray.equals(B2.boardArray());
 	};
 
 	// [5] - Compares to final state
@@ -92,7 +92,7 @@ function Board (squareArray) {
 			var upBoard = new Board(_boardArray);
 
 			// Swap 0 and the upper element
-			upBoard.setSquare(this.getSquare(zero.i-1, zero.j), zero.i, zero.j);
+			upBoard.setSquare(this.square(zero.i-1, zero.j), zero.i, zero.j);
 			upBoard.setSquare(0, zero.i-1, zero.j);
 			upBoard.updateCompleteness();
 
@@ -105,7 +105,7 @@ function Board (squareArray) {
 			var downBoard = new Board(_boardArray);
 
 			// Swap 0 and the upper element
-			downBoard.setSquare(this.getSquare(zero.i+1, zero.j), zero.i, zero.j);
+			downBoard.setSquare(this.square(zero.i+1, zero.j), zero.i, zero.j);
 			downBoard.setSquare(0, zero.i+1, zero.j);
 			downBoard.updateCompleteness();
 
@@ -118,7 +118,7 @@ function Board (squareArray) {
 			var leftBoard = new Board(_boardArray);
 
 			// Swap 0 and the upper element
-			leftBoard.setSquare(this.getSquare(zero.i, zero.j-1), zero.i, zero.j);
+			leftBoard.setSquare(this.square(zero.i, zero.j-1), zero.i, zero.j);
 			leftBoard.setSquare(0, zero.i, zero.j-1);
 			leftBoard.updateCompleteness();
 
@@ -131,7 +131,7 @@ function Board (squareArray) {
 			var rightBoard = new Board(_boardArray);
 
 			// Swap 0 and the upper element
-			rightBoard.setSquare(this.getSquare(zero.i, zero.j+1), zero.i, zero.j);
+			rightBoard.setSquare(this.square(zero.i, zero.j+1), zero.i, zero.j);
 			rightBoard.setSquare(0, zero.i, zero.j+1);
 			rightBoard.updateCompleteness();
 
@@ -180,13 +180,13 @@ function Board (squareArray) {
 	};
 
 	// [3] - Receives two values, finds their squares and SWAPS them
-	this.swap = function (Va, Vb) {
-		var _A = this.find(Va);
-		var _B = this.find(Vb);
+	// this.swap = function (Va, Vb) {
+	// 	var _A = this.find(Va);
+	// 	var _B = this.find(Vb);
 
-		this.setSquare(Vb, _A.i, _A.j);
-		this.setSquare(Va, _B.i, _B.j);
-	};
+	// 	this.setSquare(Vb, _A.i, _A.j);
+	// 	this.setSquare(Va, _B.i, _B.j);
+	// };
 
 	// [4] - Distance to final state
 	this.updateCompleteness = function () {
@@ -227,7 +227,7 @@ function Board (squareArray) {
 	// 		var nextBoard = new Board(this.getBoard());
 
 	// 		// Swap 0 and the upper element
-	// 		nextBoard.setSquare(this.getSquare(square.i-1, square.j), square.i, square.j);
+	// 		nextBoard.setSquare(this.square(square.i-1, square.j), square.i, square.j);
 	// 		nextBoard.setSquare(0, square.i-1, square.j);
 	// 		nextBoard.updateCompleteness();
 
@@ -244,7 +244,7 @@ function Board (squareArray) {
 	// 		var nextBoard = new Board(this.getBoard());
 
 	// 		// Swap 0 and the upper element
-	// 		nextBoard.setSquare(this.getSquare(square.i+1, square.j), square.i, square.j);
+	// 		nextBoard.setSquare(this.square(square.i+1, square.j), square.i, square.j);
 	// 		nextBoard.setSquare(0, square.i+1, square.j);
 	// 		nextBoard.updateCompleteness();
 
@@ -260,7 +260,7 @@ function Board (squareArray) {
 	// 		var nextBoard = new Board(this.getBoard());
 
 	// 		// Swap 0 and the upper element
-	// 		nextBoard.setSquare(this.getSquare(square.i, square.j-1), square.i, square.j);
+	// 		nextBoard.setSquare(this.square(square.i, square.j-1), square.i, square.j);
 	// 		nextBoard.setSquare(0, square.i, square.j-1);
 	// 		nextBoard.updateCompleteness();
 
@@ -276,7 +276,7 @@ function Board (squareArray) {
 	// 		var nextBoard = new Board(this.getBoard());
 
 	// 		// Swap 0 and the upper element
-	// 		nextBoard.setSquare(this.getSquare(square.i, square.j+1), square.i, square.j);
+	// 		nextBoard.setSquare(this.square(square.i, square.j+1), square.i, square.j);
 	// 		nextBoard.setSquare(0, square.i, square.j+1);
 	// 		nextBoard.updateCompleteness();
 
