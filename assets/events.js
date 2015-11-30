@@ -95,7 +95,7 @@ function keyboard (evt) {
 	// Pressing Return
 	// Tries to solve the puzzle
 	if ((evtKey === keyEnter) && (!keylock)) {
-		if (View.solveBtnReady()) { solve(); }
+		if (View.solveBtnReady()) { solveAStar(); }
 	}
 
 	// Pressing WASD
@@ -189,12 +189,12 @@ function dragNdropSettings (argument) {
 var _puzzle;
 
 // Solve Button
-function solve () {
+function solveAStar () {
 	keylock = true;
 	_puzzle = new Problem ();
 
 	// Before starting calculation, prevents more requests
-	View.setSolution("8Madness is thinking. Puny humans are instructed to w8!<br>(Do not touch this keyboard!)");
+	View.setSolution("8Madness is thinking. Puny humans are instructed to w8!<br>Do not touch this keyboard!<br>Maximum waiting time: 3 minutes.");
 	View.setSolveBtnEnabled(false);
 	View.setAnimateBtnEnabled(false);
 	
@@ -202,14 +202,12 @@ function solve () {
 		function () {
 			var _timer = new Stopwatch();
 			_timer.start();
-			_puzzle.solve();
+			_puzzle.solveAStar();
 			_timer.stop();
 
-			console.log(_timer.getMilliseconds() + " ms");
-			console.log(_puzzle.stepCount() + " steps");
-
-
 			View.setSolution(_puzzle.solution());
+			View.setElapsedTime(_timer.getMilliseconds());
+			View.setNodesExpanded(_puzzle.expanded());
 			updateFinal();
 
 			if (!_puzzle.solvable()) {
@@ -223,6 +221,47 @@ function solve () {
 				// It is also possible to animate the valid solution
 				View.setSolveBtnEnabled(true);
 				View.setAnimateBtnEnabled(true);
+				View.setSolutionSize(_puzzle.stepCount());
+				keylock = false;
+			}
+		},
+		100
+	);
+}
+
+function solveBFS () {
+	keylock = true;
+	_puzzle = new Problem ();
+
+	// Before starting calculation, prevents more requests
+	View.setSolution("8Madness is thinking. Puny humans are instructed to w8!<br>Do not touch this keyboard!<br>Maximum waiting time: 4 minutes.");
+	View.setSolveBtnEnabled(false);
+	View.setAnimateBtnEnabled(false);
+	
+	setTimeout(
+		function () {
+			var _timer = new Stopwatch();
+			_timer.start();
+			_puzzle.solveBFS();
+			_timer.stop();
+
+			View.setSolution(_puzzle.solution());
+			View.setElapsedTime(_timer.getMilliseconds());
+			View.setNodesExpanded(_puzzle.expanded());
+			updateFinal();
+
+			if (!_puzzle.solvable()) {
+				// Allowing solve button - preventing more requests
+				View.setSolveBtnEnabled(true);
+				View.setAnimateBtnEnabled(false);
+				keylock = false;
+			}
+			else {
+				// Allowing solve button - preventing more requests
+				// It is also possible to animate the valid solution
+				View.setSolveBtnEnabled(true);
+				View.setAnimateBtnEnabled(true);
+				View.setSolutionSize(_puzzle.stepCount());
 				keylock = false;
 			}
 		},

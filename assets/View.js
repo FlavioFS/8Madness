@@ -73,6 +73,7 @@ View.swap = function (Va, Vb) {
 // [1.4] - Sets the 'disabled' state of solveBtn
 View.setSolveBtnEnabled = function (bool) {
 	document.getElementsByClassName('solveBtn')[0].disabled = !bool;
+	document.getElementsByClassName('solveBtn')[1].disabled = !bool;
 };
 
 // [1.5] - Sets the 'disabled' state of animateBtn
@@ -102,4 +103,19 @@ View.setFinal = function (bool) {
 // [1.7] - Solution div's inner text
 View.setSolution = function (stringArg) {
 	document.getElementsByClassName('solution')[0].innerHTML = stringArg;
+};
+
+// [1.8] - Elapsed Time
+View.setElapsedTime = function (msTime) {
+	document.getElementsByClassName('info')[0].innerHTML = "Elapsed Time: " + msTime + " ms";
+};
+
+// [1.9] - Nodes Expanded
+View.setNodesExpanded = function (nodeCount) {
+	document.getElementsByClassName('info')[1].innerHTML = "Nodes Expanded: " + nodeCount;
+};
+
+// [1.10] - Nodes Expanded
+View.setSolutionSize = function (size) {
+	document.getElementsByClassName('info')[2].innerHTML = "Solution Size: " + size;
 };

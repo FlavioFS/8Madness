@@ -38,7 +38,8 @@
 		
 		<!-- A button to solve the puzzle, and another to show the animated solution -->
 		<div class="btnDiv">
-			<button class="solveBtn"	onclick="solve()">Solve</button>
+			<button class="solveBtn"	onclick="solveAStar()">Solve with A*</button>
+			<button class="solveBtn"	onclick="solveBFS()">Solve with BFS</button>
 			<button class="animateBtn"  onclick="animation()" disabled="true">Animate solution</button>
 		</div>
 
@@ -46,6 +47,8 @@
 		<fieldset align="center">
 			<legend align="center">Solution</legend>
 			<div class="solution">Ø</div>
+			<div class="info"></div>
+			<div class="info"></div>
 			<div class="info"></div>
 		</fieldset>
 	</body>
