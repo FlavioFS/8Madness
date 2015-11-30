@@ -8,14 +8,75 @@ function updateFinal () {
 		{ View.setFinal(false); };
 }
 
+// Moves THE ZERO downwards, and his neighbor upwards
+function swapUp (currentBoard, zero) {
+	var neighbor = currentBoard.square(zero.i+1, zero.j);
+
+	if (neighbor != false) {
+		View.swap(0, neighbor);
+
+		currentBoard.setSquare(currentBoard.square(zero.i+1, zero.j), zero.i, zero.j);
+		currentBoard.setSquare(0, zero.i+1, zero.j);
+		currentBoard.updateCompleteness();
+
+		zero.i += 1;
+	}
+}
+
+// Moves THE ZERO upwards, and his neighbor downwards
+function swapDown (currentBoard, zero) {
+	var neighbor = currentBoard.square(zero.i-1, zero.j);
+
+	if (neighbor != false) {
+		View.swap(0, neighbor);
+
+		currentBoard.setSquare(currentBoard.square(zero.i-1, zero.j), zero.i, zero.j);
+		currentBoard.setSquare(0, zero.i-1, zero.j);
+		currentBoard.updateCompleteness();
+
+		zero.i -= 1;
+	}
+}
+
+// Moves THE ZERO right, and his neighbor to the left
+function swapLeft (currentBoard, zero) {
+	var neighbor = currentBoard.square(zero.i, zero.j+1);
+
+	if (neighbor != false) {
+		View.swap(0, neighbor);
+
+		currentBoard.setSquare(currentBoard.square(zero.i, zero.j+1), zero.i, zero.j);
+		currentBoard.setSquare(0, zero.i, zero.j+1);
+		currentBoard.updateCompleteness();
+
+		zero.j += 1;
+	}
+}
+
+// Moves THE ZERO left, and his neighbor to the right
+function swapRight (currentBoard, zero) {
+	var neighbor = currentBoard.square(zero.i, zero.j-1);
+
+	if (neighbor != false) {
+		View.swap(0, neighbor);
+
+		currentBoard.setSquare(currentBoard.square(zero.i, zero.j-1), zero.i, zero.j);
+		currentBoard.setSquare(0, zero.i, zero.j-1);
+		currentBoard.updateCompleteness();
+
+		zero.j -= 1;
+	}
+}
+
 
 //////////////////////////////////////////////////
 //                   Keyboard                   //
 //////////////////////////////////////////////////
 window.onkeyup = keyboard;
 
+// Keypress detection
 function keyboard (evt) {
-	evt = evt || event;
+	evtKey = evt.which || evt.keyCode;
 
 	var keyLeft  = 37,
 		keyUp 	 = 38,
@@ -30,51 +91,22 @@ function keyboard (evt) {
 
 	// Pressing Return
 	// Tries to solve the puzzle
-	if ((evt.keyCode === keyEnter))
-		{ if (document.getElementsByClassName('solveBtn')[0].disabled === false) { solve()}; }
+	if ((evtKey === keyEnter)) {
+		if (View.solveBtnReady()) { solve(); }
+	}
 
+	// Pressing WASD
 	else {
-		var currentBoard = new Board( View.loadBoard() );
-		var zero = currentBoard.find(0);
+		var _currentBoard = new Board( View.loadBoard() );
+		var _zero = _currentBoard.find(0);
 		
-		// Pressing W
-		// Moves a piece upwards
-		if ((evt.keyCode === keyW)) {
-			var neighbor = currentBoard.square(zero.i+1, zero.j);
-
-			if (neighbor != false)
-				{ View.swap(0, neighbor); }
-		}
-
-		// Pressing S
-		// Moves a piece downwards
-		else if ((evt.keyCode === keyS)) {
-			var neighbor = currentBoard.square(zero.i-1, zero.j);
-
-			if (neighbor != false)
-				View.swap(0, neighbor);
-		}
-
-		// Pressing A
-		// Moves a piece to the left
-		else if ((evt.keyCode === keyA)) {
-			var neighbor = currentBoard.square(zero.i, zero.j+1);
-
-			if (neighbor != false)
-				View.swap(0, neighbor);
-		}
-
-		// Pressing D
-		// Moves a piece to the right
-		else if ((evt.keyCode === keyD)) {
-			var neighbor = currentBoard.square(zero.i, zero.j-1);
-
-			if (neighbor != false)
-				View.swap(0, neighbor);
-		}
+		// Swap functions defined at the top of this file (utility funcions)
+		if      ((evtKey === keyW)) { swapUp(_currentBoard, _zero);    }
+		else if ((evtKey === keyA)) { swapLeft(_currentBoard, _zero);  }
+		else if ((evtKey === keyS)) { swapDown(_currentBoard, _zero);  }
+		else if ((evtKey === keyD)) { swapRight(_currentBoard, _zero); }		
 		
 		updateFinal();
-		//delete currentBoard;
 	}
 }
 
@@ -147,24 +179,65 @@ function dragNdropSettings (argument) {
 	};
 };
 
+
 //////////////////////////////////////////////////
 //                    Buttons                   //
 //////////////////////////////////////////////////
-var puzzle;
+var _puzzle;
 
 // Solve Button
-function solve (argument) {
-	puzzle = new Problem ();
-	puzzle.solve();
-	var _solution = puzzle.solution();
-	console.log(_solution);
-	document.getElementsByClassName('solution')[0].innerHTML = _solution;
+function solve () {
+	_puzzle = new Problem ();
+
+	var _timer = new Stopwatch();
+	_timer.start();
+	_puzzle.solve();
+	_timer.stop();
+
+	console.log(_timer.getMilliseconds());
+
+	View.setSolution(_puzzle.solution());
 }
 
-// Show Solution
-function animate (argument) {
-	//var solution = puzzle.getSolution();
-	// ...
+// Animate button
+function animation () {
+	if (_puzzle && _puzzle.solved()) {
+		var _solution = _puzzle.solution().split(" ");
+		var _currentBoard = new Board( View.loadBoard() );
+		var _zero = _currentBoard.find(0);
+
+
+		// Highlighting and Motion - Timeout forces it to be recursive
+		function highlightAndMotion (i) {
+			// Highlight
+			var _displayNow = _solution.slice();
+			_displayNow[i] = "<span>" + _displayNow[i] + "</span>";
+			_displayNow = _displayNow.join(" ");
+
+			View.setSolution(_displayNow);
+
+			// Motion
+			if      (_solution[i] === View.ARROWS.U) { swapUp(_currentBoard, _zero);    }
+			else if (_solution[i] === View.ARROWS.D) { swapDown(_currentBoard, _zero);  }
+			else if (_solution[i] === View.ARROWS.L) { swapLeft(_currentBoard, _zero);  }
+			else if (_solution[i] === View.ARROWS.R) { swapRight(_currentBoard, _zero); }
+
+			// Recursion
+			if (i < _solution.length - 1) {
+				setTimeout(
+					function () { highlightAndMotion(i+1); },
+					1000
+				);
+			}
+			else {
+				View.setSolution(_solution.join(" "));
+				View.setAnimateBtnEnabled(false);
+				updateFinal();
+			}
+		}
+
+		highlightAndMotion(0);
+	}
 }
 
 

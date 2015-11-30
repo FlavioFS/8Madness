@@ -23,9 +23,10 @@ function Board (squareArray) {
 	this.boardArray	 = function () { return _boardArray.slice(); };
 	this.completeness = function () { return _completeness;	     };
 
+	// Override - Object method
 	this.toString = function () {
 		return (
-			"|" +  _boardArray[0] + ", " + _boardArray[1] + ", " + _boardArray[2] + "\n " + 
+			"|" +	_boardArray[0] + ", " + _boardArray[1] + ", " + _boardArray[2] + "\n " + 
 					_boardArray[3] + ", " + _boardArray[4] + ", " + _boardArray[5] + "\n " + 
 					_boardArray[6] + ", " + _boardArray[7] + ", " + _boardArray[8] + "」"
 		);
@@ -34,11 +35,8 @@ function Board (squareArray) {
 
 
 	// Priviledged Methods
-
-	/*/////////////////////////////////////////
-				     Read-only
-	/////////////////////////////////////////*/
-	// [1] - Receives the value, finds it and returns the position
+	//// Read-only
+	////// [1] - Receives the value, finds it and returns the position
 	this.find = function (value) {
 		for (var k = 0; k < Board.BOARD_LENGTH; k++) {
 			if (_boardArray[k] === value) {
@@ -52,7 +50,7 @@ function Board (squareArray) {
 		throw "Board.find(value): Not Found!";
 	};
 
-	// [2] - Receives the matrix-position and returns the value
+	////// [2] - Receives the matrix-position and returns the value
 	this.square = function (i, j) {
 		if ((i < 0) ||
 			(j < 0) ||
@@ -64,25 +62,18 @@ function Board (squareArray) {
 		return _boardArray[i*Board.BOARD_SIZE + j];
 	};
 
-	// [3] - Receives the linear position and returns the value
-	// this.get = function (k) {
-	// 	if ((i < 0) || (k >= Board.BOARD_LENGTH)) { throw "Board.get(k): Out of board!"; }
-
-	// 	return _boardArray[k];
-	// };
-
-	// [4] - Are these boards the same?
+	////// [3] - Are these boards the same?
 	this.equals = function (B2) {
 		return _boardArray.equals(B2.boardArray());
 	};
 
-	// [5] - Compares to final state
+	////// [4] - Compares to final state
 	this.finalState = function () {
 		return _boardArray.equals(Board.FINAL_STATE);
 	};
 
 
-	///////// VALID MOVES /////////
+	////// [5] -  Valid Moves
 	this.generateNeighbors = function () {
 		var zero = this.find(0);
 		var result = [];
@@ -145,11 +136,8 @@ function Board (squareArray) {
 
 
 
-
-	/*/////////////////////////////////////////
-				       Write
-	/////////////////////////////////////////*/
-	// [1] - Sets the value of a square
+	//// Write
+	////// [1] - Sets the value of a square
 	this.setSquare = function (value, i, j) {
 		if ((i < 0) ||
 			(j < 0) ||
@@ -160,7 +148,7 @@ function Board (squareArray) {
 		_boardArray[i*Board.BOARD_SIZE + j] = value;
 	};
 
-	// [2] - Receives a data array and sets the board with it
+	////// [2] - Receives a data array and sets the board with it
 	this.setBoard = function (squareArray) {
 		// Wrong size
 		if (squareArray.length !== Board.BOARD_LENGTH) { throw "Board constructor: Wrong Size!"; }
@@ -179,16 +167,7 @@ function Board (squareArray) {
 		this.updateCompleteness();
 	};
 
-	// [3] - Receives two values, finds their squares and SWAPS them
-	// this.swap = function (Va, Vb) {
-	// 	var _A = this.find(Va);
-	// 	var _B = this.find(Vb);
-
-	// 	this.setSquare(Vb, _A.i, _A.j);
-	// 	this.setSquare(Va, _B.i, _B.j);
-	// };
-
-	// [4] - Distance to final state
+	////// [3] - Distance to final state
 	this.updateCompleteness = function () {
 		var manhattanDist = 0;
 		
@@ -207,80 +186,8 @@ function Board (squareArray) {
 		_completeness = manhattanDist;
 	};
 
+
+
 	// Constructor
 	this.setBoard(squareArray);
 };
-// Object comparison
-// Board.compare = function (B1, B2) {
-// 	if (B1.completeness < B2.completeness) return -1;
-// 	if (B1.completeness > B2.completeness) return  1;
-
-// 	return 0;
-// };
-
-
-	// // [1] - UP leads to...?
-	// this.up = function () {
-	// 	var square = this.find(0);
-
-	// 	if (square.i > 0) {
-	// 		var nextBoard = new Board(this.getBoard());
-
-	// 		// Swap 0 and the upper element
-	// 		nextBoard.setSquare(this.square(square.i-1, square.j), square.i, square.j);
-	// 		nextBoard.setSquare(0, square.i-1, square.j);
-	// 		nextBoard.updateCompleteness();
-
-	// 		return nextBoard;
-	// 	};
-
-	// 	return false;
-	// };
-
-	// [2] - DOWN leads to...?
-	// this.down = function () {
-	// 	var square = this.find(0);
-	// 	if (square.i < Board.BOARD_SIZE-1) {
-	// 		var nextBoard = new Board(this.getBoard());
-
-	// 		// Swap 0 and the upper element
-	// 		nextBoard.setSquare(this.square(square.i+1, square.j), square.i, square.j);
-	// 		nextBoard.setSquare(0, square.i+1, square.j);
-	// 		nextBoard.updateCompleteness();
-
-	// 		return nextBoard;
-	// 	};
-	// 	return false;
-	// };
-
-	// [3] - LEFT leads to...?
-	// this.left = function () {
-	// 	var square = this.find(0);
-	// 	if (square.j > 0) {
-	// 		var nextBoard = new Board(this.getBoard());
-
-	// 		// Swap 0 and the upper element
-	// 		nextBoard.setSquare(this.square(square.i, square.j-1), square.i, square.j);
-	// 		nextBoard.setSquare(0, square.i, square.j-1);
-	// 		nextBoard.updateCompleteness();
-
-	// 		return nextBoard;
-	// 	};
-	// 	return false;
-	// };
-
-	// [4] - RIGHT leads to...?
-	// this.right = function () {
-	// 	var square = this.find(0);
-	// 	if (square.j < Board.BOARD_SIZE-1) {
-	// 		var nextBoard = new Board(this.getBoard());
-
-	// 		// Swap 0 and the upper element
-	// 		nextBoard.setSquare(this.square(square.i, square.j+1), square.i, square.j);
-	// 		nextBoard.setSquare(0, square.i, square.j+1);
-	// 		nextBoard.updateCompleteness();
-
-	// 		return nextBoard;
-	// 	};
-	// 	return false;
-	// };

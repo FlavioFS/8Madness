@@ -108,7 +108,7 @@ body {
 	margin: 10px 0;
 }
 
-.solveBtn, .showBtn {
+.solveBtn, .animateBtn {
 	display: inline-block;
 }
 
@@ -126,4 +126,9 @@ fieldset {
 	font-family: "Comic Sans MS", cursive, sans-serif;
 	border-radius: 10px;
 	margin: auto;
+	font-size: 30px;
+}
+
+span {
+	color: #B0B;
 }

@@ -10,7 +10,12 @@
 // [1]
 function View () {};
 View.COORDINATES = ["20px", "140px", "260px"];
-View.ARROWS = {U: "&uarr;", D: "&darr;", L: "&larr;", R: "&rarr;"};
+View.ARROWS = {U: "\u21E7", D: "\u21E9", L: "\u21E6", R: "\u21E8"};
+
+
+/*/////////////////////////////////////////
+			     Read-only
+/////////////////////////////////////////*/
 
 // [1.1] - Returns the values of the board displayed in the page
 View.loadBoard = function () {
@@ -34,13 +39,23 @@ View.loadBoard = function () {
 	};
 
 	// Initial state of light
-	if (squaresArray.equals([1, 2, 3, 4, 5, 6, 7, 8, 0])) { View.setFinal(true); }
+	if (squaresArray.equals(Board.FINAL_STATE)) { View.setFinal(true); }
 	else { View.setFinal(false); }
 
 	return squaresArray;
 };
 
-// [1.2] - Swaps two squares
+// [1.2] Is the solve button ready?
+View.solveBtnReady = function () {
+	return !document.getElementsByClassName("solveBtn")[0].disabled;
+};
+
+
+
+/*/////////////////////////////////////////
+			       Write
+/////////////////////////////////////////*/
+// [1.3] - Swaps two squares
 View.swap = function (Va, Vb) {
 	pieces = $(".piece");
 	sqrA = pieces[Va];
@@ -55,17 +70,36 @@ View.swap = function (Va, Vb) {
 	sqrB.style.top  = temp[1];
 };
 
+// [1.4] - Sets the 'disabled' state of solveBtn
+View.setSolveBtnEnabled = function (bool) {
+	document.getElementsByClassName('solveBtn')[0].disabled = !bool;
+};
+
+// [1.5] - Sets the 'disabled' state of animateBtn
+View.setAnimateBtnEnabled = function (bool) {
+	document.getElementsByClassName('animateBtn')[0].disabled = !bool;
+};
+
+// [1.6] - Sets the state of the final-state light
 View.setFinal = function (bool) {
 	var _signal = $(".signal");
 
+	// Final State -> Disable the buttons!
 	if (bool === true) {
 		_signal.addClass("finished");
-		document.getElementsByClassName('solveBtn')[0].disabled = true;
-		document.getElementsByClassName('showBtn')[0].disabled = true;
+		View.setSolveBtnEnabled(false);
+		View.setAnimateBtnEnabled(false);
 	}
+
+	// Not Final -> Allow queries
 	else {
 		_signal.removeClass("finished");
-		document.getElementsByClassName('solveBtn')[0].disabled = false;
-		document.getElementsByClassName('showBtn')[0].disabled = false;
+		View.setSolveBtnEnabled(true);
+		View.setAnimateBtnEnabled(false);
 	};
+};
+
+// [1.7] - Solution div's inner text
+View.setSolution = function (stringArg) {
+	document.getElementsByClassName('solution')[0].innerHTML = stringArg;
 };

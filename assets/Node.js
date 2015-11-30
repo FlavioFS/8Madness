@@ -95,11 +95,3 @@ function Node (argBoard) {
 	// Constructor
 	this.setBoard(argBoard);
 };
-
-// Object comparison
-// Node.compare = function (N1, N2) {
-// 	if (N1.evaluation() < N2.evaluation()) return -1;
-// 	if (N1.evaluation() > N2.evaluation()) return  1;
-
-// 	return 0;
-// };
