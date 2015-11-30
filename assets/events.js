@@ -191,7 +191,6 @@ var _puzzle;
 // Solve Button
 function solve () {
 	keylock = true;
-	console.log("keylock solve init: " + keylock);
 	_puzzle = new Problem ();
 
 	// Before starting calculation, prevents more requests
@@ -206,7 +205,8 @@ function solve () {
 			_puzzle.solve();
 			_timer.stop();
 
-			console.log(_timer.getMilliseconds());
+			console.log(_timer.getMilliseconds() + " ms");
+			console.log(_puzzle.stepCount() + " steps");
 
 
 			View.setSolution(_puzzle.solution());
@@ -217,7 +217,6 @@ function solve () {
 				View.setSolveBtnEnabled(true);
 				View.setAnimateBtnEnabled(false);
 				keylock = false;
-				console.log("keylock solve end if: " + keylock);
 			}
 			else {
 				// Allowing solve button - preventing more requests
@@ -225,7 +224,6 @@ function solve () {
 				View.setSolveBtnEnabled(true);
 				View.setAnimateBtnEnabled(true);
 				keylock = false;
-				console.log("keylock solve end else: " + keylock);
 			}
 		},
 		100

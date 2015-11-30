@@ -91,6 +91,17 @@ function Node (argBoard) {
 		return neighbors;
 	};
 
+	this.toInt = function () {
+		var _strValue = "";
+		var _boardArray = _boardObj.boardArray();
+
+		for (var i = 0; i < _boardArray.length; i++) {
+			_strValue += _boardArray[i];
+		}
+
+		return parseInt(_strValue, 10);
+	};
+
 
 	// Constructor
 	this.setBoard(argBoard);

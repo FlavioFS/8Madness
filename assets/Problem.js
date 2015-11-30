@@ -13,7 +13,7 @@
 // Defines a main board and uses a tree to solve the game
 function Problem () {
 	// Static Variables
-	Problem.MAX_ITERATIONS = 362880; // The graph has 9! states (9! = 362880).
+	Problem.MAX_ITERATIONS = 25000; // The graph has 9! states (9! = 362880).
 
 	// Accessible Atributes
 	var _solved = false;
@@ -68,55 +68,42 @@ function Problem () {
 
 	// Priviledged Methods
 	this.solve = function () {
-		// View.setSolution("8Madness is thinking. Puny humans are instructed to w8!");
-
-		// // Starting calculation - preventing more requests
-		// View.setSolveBtnEnabled(false);
-		// View.setAnimateBtnEnabled(false);
 
 		// Already solved
 		if (_startingBoard.finalState()) {
 			_solution = "Ø";
 			_steps = 0;
-			// solveBtn.disabled = false;
 			return false;
 		}
 
-		var counting = 0;
+		var _counting = 0;
 		var _1st = _pQueue.shift();
-		var newGuys = _1st.generateNeighbors();
-		sortedInsertion(newGuys);
+		var _newGuys = _1st.generateNeighbors();
+		var _pastStates = new Set();
+		_pastStates.insert(_1st.toInt());
 
-		while ( (!_1st.board().finalState()) && (_pQueue !== []) && (counting < Problem.MAX_ITERATIONS) ) {
+		sortedInsertion(_newGuys);
+
+		while ( (!_1st.board().finalState()) && (_pQueue !== []) && (_counting < Problem.MAX_ITERATIONS) ) {
 			_1st = _pQueue.shift();
-			newGuys = _1st.generateNeighbors();
-			counting++;
-			sortedInsertion(newGuys);
+
+			if ( !_pastStates.searchElement(_1st.toInt()).found ) {
+				_pastStates.insert(_1st.toInt());
+				_newGuys = _1st.generateNeighbors();
+				sortedInsertion(_newGuys);
+			}
+			
+			_counting++;
+
+			// console.log(_1st.toInt() + " 's evalutaion = " + _1st.evaluation());
 		}
 
-		console.log( "counting: " + counting );
 		// Solution not found
-		if ((_pQueue === []) || (counting === Problem.MAX_ITERATIONS)) {
+		if ((_pQueue === []) || (_counting === Problem.MAX_ITERATIONS)) {
 			_solved = false;
 			_solvable = false;
-			_solution = "How dare you tricking me with an unsolvable puzzle!?";
+			_solution = "How dare you trick me with an unsolvable puzzle!?";
 			
-			// Finishing calculation - allowing more requests and giving feedback
-			// setTimeout(
-			// 	function () {
-			// 		View.setSolution("How dare you tricking me with an unsolvable puzzle!?");
-
-			// 		// Starting calculation - preventing more requests
-			// 		View.setSolveBtnEnabled(true);
-			// 		View.setAnimateBtnEnabled(false);
-			// 	},
-			// 	1
-			// );
-
-			// document.getElementsByClassName('solveBtn')[0].disabled = false;
-			// View.setSolveBtnEnabled(true);
-			// View.setAnimateBtnEnabled(false);
-
 			return false;
 		}
 
@@ -134,21 +121,6 @@ function Problem () {
 			}
 
 			_solution = _solution.split(" ").reverse().join(" ");
-
-			// View.setSolveBtnEnabled(true);
-			// View.setAnimateBtnEnabled(true);
-
-			// Finishing calculation - allowing more requests and giving feedback
-			// setTimeout(
-			// 	function () {
-			// 		View.setSolution(_solution);
-
-			// 		// Starting calculation - preventing more requests
-			// 		View.setSolveBtnEnabled(true);
-			// 		View.setAnimateBtnEnabled(true);
-			// 	},
-			// 	1
-			// );
 
 			return true;
 		}

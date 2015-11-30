@@ -10,17 +10,9 @@
                                       Main
 =============================================================================== */
 function main () {
-	//BoardView.loadBoard();
-	// var startingBoard = new Board(boardModel);
-	// var root = new Node(startingBoard);
-
-
-	// var sides = root.generateNeighbors();
-	// for (var i = 0; i < sides.length; i++) {
-	// 	//console.log(""+sides[i].getBoard());
-	// };
-
-	//root.solve();
+	// Test
+	var n = new Node(new Board(View.loadBoard()));
+	console.log(n.toInt());
 };
 
 $(document).ready(main);
