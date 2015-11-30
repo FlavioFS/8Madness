@@ -73,9 +73,12 @@ function swapRight (currentBoard, zero) {
 //                   Keyboard                   //
 //////////////////////////////////////////////////
 window.onkeyup = keyboard;
+var keylock = false;
 
 // Keypress detection
 function keyboard (evt) {
+	if (keylock) { return; }
+
 	evtKey = evt.which || evt.keyCode;
 
 	var keyLeft  = 37,
@@ -91,7 +94,7 @@ function keyboard (evt) {
 
 	// Pressing Return
 	// Tries to solve the puzzle
-	if ((evtKey === keyEnter)) {
+	if ((evtKey === keyEnter) && (!keylock)) {
 		if (View.solveBtnReady()) { solve(); }
 	}
 
@@ -187,16 +190,46 @@ var _puzzle;
 
 // Solve Button
 function solve () {
+	keylock = true;
+	console.log("keylock solve init: " + keylock);
 	_puzzle = new Problem ();
 
-	var _timer = new Stopwatch();
-	_timer.start();
-	_puzzle.solve();
-	_timer.stop();
+	// Before starting calculation, prevents more requests
+	View.setSolution("8Madness is thinking. Puny humans are instructed to w8!<br>(Do not touch this keyboard!)");
+	View.setSolveBtnEnabled(false);
+	View.setAnimateBtnEnabled(false);
+	
+	setTimeout(
+		function () {
+			var _timer = new Stopwatch();
+			_timer.start();
+			_puzzle.solve();
+			_timer.stop();
 
-	console.log(_timer.getMilliseconds());
+			console.log(_timer.getMilliseconds());
 
-	View.setSolution(_puzzle.solution());
+
+			View.setSolution(_puzzle.solution());
+			updateFinal();
+
+			if (!_puzzle.solvable()) {
+				// Allowing solve button - preventing more requests
+				View.setSolveBtnEnabled(true);
+				View.setAnimateBtnEnabled(false);
+				keylock = false;
+				console.log("keylock solve end if: " + keylock);
+			}
+			else {
+				// Allowing solve button - preventing more requests
+				// It is also possible to animate the valid solution
+				View.setSolveBtnEnabled(true);
+				View.setAnimateBtnEnabled(true);
+				keylock = false;
+				console.log("keylock solve end else: " + keylock);
+			}
+		},
+		100
+	);
 }
 
 // Animate button

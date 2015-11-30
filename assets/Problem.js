@@ -35,6 +35,7 @@ function Problem () {
 	this.stepCount = function () { return _steps;			 };
 
 	// Private Methods
+	//// Insert a sorted list in the queue and maintains the sort property
 	function sortedInsertion (insertingThis) {
 		// Empty list
 		if (_pQueue.length === 0) {
@@ -67,10 +68,11 @@ function Problem () {
 
 	// Priviledged Methods
 	this.solve = function () {
+		// View.setSolution("8Madness is thinking. Puny humans are instructed to w8!");
 
-		// Starting calculation - preventing more requests
-		View.setSolveBtnEnabled(false);
-		View.setAnimateBtnEnabled(false);
+		// // Starting calculation - preventing more requests
+		// View.setSolveBtnEnabled(false);
+		// View.setAnimateBtnEnabled(false);
 
 		// Already solved
 		if (_startingBoard.finalState()) {
@@ -97,10 +99,23 @@ function Problem () {
 		if ((_pQueue === []) || (counting === Problem.MAX_ITERATIONS)) {
 			_solved = false;
 			_solvable = false;
-			_solution = "Error - Invalid Puzzle: This puzzle has no solution!";
-			document.getElementsByClassName('solveBtn')[0].disabled = false;
-			View.setSolveBtnEnabled(true);
-			View.setAnimateBtnEnabled(false);
+			_solution = "How dare you tricking me with an unsolvable puzzle!?";
+			
+			// Finishing calculation - allowing more requests and giving feedback
+			// setTimeout(
+			// 	function () {
+			// 		View.setSolution("How dare you tricking me with an unsolvable puzzle!?");
+
+			// 		// Starting calculation - preventing more requests
+			// 		View.setSolveBtnEnabled(true);
+			// 		View.setAnimateBtnEnabled(false);
+			// 	},
+			// 	1
+			// );
+
+			// document.getElementsByClassName('solveBtn')[0].disabled = false;
+			// View.setSolveBtnEnabled(true);
+			// View.setAnimateBtnEnabled(false);
 
 			return false;
 		}
@@ -120,8 +135,20 @@ function Problem () {
 
 			_solution = _solution.split(" ").reverse().join(" ");
 
-			View.setSolveBtnEnabled(true);
-			View.setAnimateBtnEnabled(true);
+			// View.setSolveBtnEnabled(true);
+			// View.setAnimateBtnEnabled(true);
+
+			// Finishing calculation - allowing more requests and giving feedback
+			// setTimeout(
+			// 	function () {
+			// 		View.setSolution(_solution);
+
+			// 		// Starting calculation - preventing more requests
+			// 		View.setSolveBtnEnabled(true);
+			// 		View.setAnimateBtnEnabled(true);
+			// 	},
+			// 	1
+			// );
 
 			return true;
 		}

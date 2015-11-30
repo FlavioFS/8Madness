@@ -116,7 +116,7 @@ body {
 /* Where the written solution is presented */
 fieldset {
 	margin: 0 auto;
-	max-width: 40%;
+	max-width: 50%;
 }
 
 .solution {
@@ -126,7 +126,7 @@ fieldset {
 	font-family: "Comic Sans MS", cursive, sans-serif;
 	border-radius: 10px;
 	margin: auto;
-	font-size: 30px;
+	font-size: 20px;
 }
 
 span {
