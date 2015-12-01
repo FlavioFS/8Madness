@@ -92,13 +92,18 @@ function keyboard (evt) {
 		keyA 	 = 65,
 		keyS 	 = 83,
 		keyD 	 = 68,
-		keyEnter = 13;
+		key1	 = 49,
+		key3	 = 51;
 
 
 	// Pressing Return
 	// Tries to solve the puzzle
-	if ((evtKey === keyEnter) && (!keylock)) {
+	if ((evtKey === key1) && (!keylock)) {
 		if (View.solveBtnReady()) { solveAStar(); }
+	}
+
+	else if ((evtKey === key3) && (!keylock)) {
+		if (View.solveBtnReady()) { solveBFS(); }
 	}
 
 	// Press WASD moves the pieces from the board
