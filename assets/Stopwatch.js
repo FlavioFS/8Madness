@@ -1,12 +1,13 @@
-// A class for time measuring
+// A class that measured the computation time
 function Stopwatch(){
   // Private Attributes
   var _start, _end;
 
   // Priviledged Methods
-  this.start = function () { _start = new Date(); };
-  this.stop  = function () { _end   = new Date(); };
+  this.start = function () { _start = new Date(); };  // Starts timing
+  this.stop  = function () { _end   = new Date(); };  // Stops timing
 
+  // Clears the timer
   this.clear = function () {
     _start = null;
     _end = null;

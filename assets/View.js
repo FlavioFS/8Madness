@@ -7,7 +7,7 @@
  *     ||||||       ||||||||||||    ||||||||||||        |||||  ||||
  */
 
-// [1]
+// [1] - A class to control the GUI
 function View () {};
 View.COORDINATES = ["20px", "140px", "260px"];
 View.ARROWS = {U: "\u21E7", D: "\u21E9", L: "\u21E6", R: "\u21E8"};
@@ -17,28 +17,28 @@ View.ARROWS = {U: "\u21E7", D: "\u21E9", L: "\u21E6", R: "\u21E8"};
 			     Read-only
 /////////////////////////////////////////*/
 
-// [1.1] - Returns the values of the board displayed in the page
+// [1.1] - Returns (as an array) the values of the pieces displayed in the game board
 View.loadBoard = function () {
-	var pieces = $(".piece");
-	var squaresArray = [1, 2, 3, 4, 5, 6, 7, 8, 0];
+	var pieces = $(".piece");						// The game board
+	var squaresArray = [1, 2, 3, 4, 5, 6, 7, 8, 0];	// Going to store the values here
 	
-	// Checks all elements
+	// Selects an element E
 	for (var i = 0; i < pieces.length; i++) {
 		var horizontalPosition = 0;
 		
-		// Searching for the horizontal position
+		// Finds E's horizontal position in pixels and saves it
 		for (var x = 0; x < View.COORDINATES.length; x++) {
 			if (pieces[i].style.left == View.COORDINATES[x]) { horizontalPosition = x; }
 		};
 
-		// Checks "top" value for each element
+		// Finds E's vertical position, and saves E at the correct place in the result array
 		for (var y = 0; y < View.COORDINATES.length; y++) {
 			if (pieces[i].style.top  == View.COORDINATES[y])
 				{ squaresArray[3*y + horizontalPosition] = parseInt(pieces[i].innerHTML); };
 		};
 	};
 
-	// Initial state of light
+	// Sets how the final state lamp should be
 	if (squaresArray.equals(Board.FINAL_STATE)) { View.setFinal(true); }
 	else { View.setFinal(false); }
 
@@ -55,7 +55,7 @@ View.solveBtnReady = function () {
 /*/////////////////////////////////////////
 			       Write
 /////////////////////////////////////////*/
-// [1.3] - Swaps two squares
+// [1.3] - Swaps two squares whose values are Va and Vb
 View.swap = function (Va, Vb) {
 	pieces = $(".piece");
 	sqrA = pieces[Va];
@@ -81,7 +81,7 @@ View.setAnimateBtnEnabled = function (bool) {
 	document.getElementsByClassName('animateBtn')[0].disabled = !bool;
 };
 
-// [1.6] - Sets the state of the final-state light
+// [1.6] - Sets the state of the final-state lamp
 View.setFinal = function (bool) {
 	var _signal = $(".signal");
 
@@ -115,7 +115,7 @@ View.setNodesExpanded = function (nodeCount) {
 	document.getElementsByClassName('info')[1].innerHTML = "Nodes Expanded: " + nodeCount;
 };
 
-// [1.10] - Nodes Expanded
+// [1.10] - Amount of steps the solution requires
 View.setSolutionSize = function (size) {
 	document.getElementsByClassName('info')[2].innerHTML = "Solution Size: " + size;
 };

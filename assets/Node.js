@@ -13,10 +13,10 @@
 function Node (argBoard) {
 
 	// Private Attributes
-	var _boardObj;
-	var _cost;
-	var _ancestor;
-	var _ancestorPlayed;
+	var _boardObj;			// A board object
+	var _cost;				// The amount of movements required to reach this state
+	var _ancestor;			// The node that generated this node
+	var _ancestorPlayed;	// Which move the parent node used to generate this node
 
 	// Set
 	this.setBoard			= function (newBoard)			{ _boardObj		  = newBoard;		   };
@@ -31,7 +31,7 @@ function Node (argBoard) {
 	this.ancestorPlayed	= function () { return _ancestorPlayed;	};
 
 
-	// Override
+	// Override - String Representation
 	this.toString = function () {
 		return _boardObj.toString();
 	};
@@ -42,6 +42,7 @@ function Node (argBoard) {
 		return _cost + _boardObj.completeness();
 	};
 
+	// Returns a SORTED (by evaluation) array of 2~4 Nodes containing the neighbors
 	this.generateNeighbors = function () {
 		var sideBoards = _boardObj.generateNeighbors();
 		var neighbors = [];
@@ -86,11 +87,13 @@ function Node (argBoard) {
 			neighbors[i].setCost(_cost + 1);
 		};
 
-
+		// Sorting the neighbors by evaluation
 		neighbors.sort( function (a, b) { return a.evaluation() - b.evaluation(); } );
 		return neighbors;
 	};
 
+
+	// Compact representation of a node
 	this.toInt = function () {
 		var _strValue = "";
 		var _boardArray = _boardObj.boardArray();

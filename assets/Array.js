@@ -1,3 +1,6 @@
+// Overriding "equals" method
+
+// Is it coded already?
 if (Array.prototype.equals)
 	console.warn("Overriding existing Array.prototype.equals.");
 

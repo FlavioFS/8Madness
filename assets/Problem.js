@@ -13,23 +13,22 @@
 // Defines a main board and uses a tree to solve the game
 function Problem () {
 	// Static Variables
-	// The graph has 9! states (9! = 362880).
-	Problem.MAX_THEORETICAL = 362880;
-	Problem.MAX_ITERATIONS = 128000;
-	Problem.MAX_ITERATIONS_LIGHT = 9000;
+	Problem.MAX_THEORETICAL = 362880;		// The graph has 9! states (9! = 362880).
+	Problem.MAX_ITERATIONS = 128000;		// Too much for A*
+	Problem.MAX_ITERATIONS_LIGHT = 9000;	// When the starting board is close to the solution
 
 	// Accessible Atributes
-	var _solved = false;
-	var _solvable = true;
-	var _solution = "";
-	var _steps = 0;
-	var _expanded = 0;
+	var _solved = false;	// The puzzle was solved?
+	var _solvable = true;	// The puzzle is solvable?
+	var _solution = "";		// This is the solution (when there is one)
+	var _steps = 0;			// What is the size of the solution?
+	var _expanded = 0;		// How many nodes this algorithm has expanded?
 	
 	// Hidden Attributes
-	var _startingBoard = new Board(View.loadBoard());
-	var _root = new Node(_startingBoard);
-	_root.setCost(0);
-	var _pQueue = [_root];
+	var _startingBoard = new Board(View.loadBoard());	// The queried board
+	var _root = new Node(_startingBoard);				// The first node, created from the queried board
+	_root.setCost(0);									// Initial cost is zero
+	var _pQueue = [_root];								// The priority (evaluation-ordered) queue of Nodes to expand
 	
 
 	// Get
@@ -41,7 +40,7 @@ function Problem () {
 
 	// -------------------- A* --------------------
 	//// Private
-	////// Insert a sorted list in the queue and maintains the sort property
+	////// Inserts a sorted list in the priority queue and maintains the sorting property
 	function sortedInsertionAStar (insertingThis) {
 		// Empty list
 		if (_pQueue.length === 0) {
@@ -59,12 +58,12 @@ function Problem () {
 			while ((j < _pQueue.length) && (insertingThis[i].evaluation() > _pQueue[j].evaluation()))
 				{ j++; }
 
-			// ...and insert it.
+			// ...and inserts it.
 			if ((j < _pQueue.length) && ( !insertingThis[i].board().equals(_pQueue[j].board()) )) {
 				_pQueue.splice(j, 0, insertingThis[i]);
 			}
 			
-			// When it is the last one (the biggest)
+			// When it is the last one (the biggest), push it to the end
 			else if (j === _pQueue.length) {
 				_pQueue.push(insertingThis[i]);
 			}
@@ -80,42 +79,54 @@ function Problem () {
 			return false;
 		}
 
-		_expanded = 0;
-		var _1st = _pQueue.shift();
-		var _newGuys = _1st.generateNeighbors();
-		var _pastStates = new Set();
+		// Not solved yet
+		_expanded = 1;								// At the beginning, 1 Node is expanded: the root
+		var _1st = _pQueue.shift();					// Pops a node
+		var _newGuys = _1st.generateNeighbors();	// Generate its neighbors
+		var _pastStates = new Set();				// A set to save the visited nodes to prevent re-visiting
 		_pastStates.insert(_1st.toInt());
+		sortedInsertionAStar(_newGuys);				// Merges the neighbors with the queue without unsorting
+		var _maxExpansions;							// Won't expand more than this amount of nodes. Unnecessary.
 
-		sortedInsertionAStar(_newGuys);
 
-		var _maxExpansions;
+		// A simple case (close to the solution)
 		if (_root.evaluation() < 9) { _maxExpansions = Problem.MAX_ITERATIONS_LIGHT; }
+
+		// A not so simple case (more steps required)
 		else { _maxExpansions = Problem.MAX_ITERATIONS; }
 
+		/* Stops when:
+		 * 	1. Finds the solution;
+		 * 	2. The queue is empty (searched the whole graph and there is no solution)!
+		 * 	3. Searched enough to know that there is no solution and it is just wasting time.
+		 */
 		while ( (!_1st.board().finalState()) && (_pQueue !== []) && (_expanded < _maxExpansions) ) {
+			// Pops a Node
 			_1st = _pQueue.shift();
 
+			// This guy is a new Node!
 			if ( !_pastStates.searchElement(_1st.toInt()).found ) {
-				_pastStates.insert(_1st.toInt());
-				_newGuys = _1st.generateNeighbors();
+				_pastStates.insert(_1st.toInt());		// Now, it is not new anymore
+				_newGuys = _1st.generateNeighbors();	// Generates its neighbors
 
-				// Search and remove the neighbors that are already in the set of past states
+				// Search and remove the neighbors that are repeated nodes
 				for (var i = 0; i < _newGuys.length; i++) {
 					if ( _pastStates.searchElement(_newGuys[i].toInt()).found ) {
 						_newGuys.splice(i, 1);
 					}
 				}
 
+				// If there is still some new node among the neighbors, merge with the queue
 				if (_newGuys.length > 0)
 					{ sortedInsertionAStar(_newGuys); }
 			}
 			
+			// One more Node expanded
 			_expanded++;
 
-			// console.log(_1st.toInt() + " 's evalutaion = " + _1st.evaluation());
 		}
 
-		// Solution not found
+		// Solution not found: the queue is over or the limit was reached
 		if ((_pQueue === []) || (_expanded === _maxExpansions)) {
 			_solved = false;
 			_solvable = false;
@@ -129,6 +140,7 @@ function Problem () {
 			_solved = true;
 			_steps = _1st.cost;
 
+			// Generates the solution by climbing the ancestors tree
 			var _goingUp = _1st;
 			_steps = 0;
 			while (_goingUp != _root) {
@@ -137,6 +149,7 @@ function Problem () {
 				_steps++;
 			}
 
+			// By climbing the tree, the solution obtained is inverted
 			_solution = _solution.split(" ").reverse().join(" ");
 
 			return true;
@@ -183,36 +196,47 @@ function Problem () {
 			return false;
 		}
 
-		_expanded = 0;
-		var _1st = _pQueue.shift();
-		var _newGuys = _1st.generateNeighbors();
-		var _pastStates = new Set();
-		_pastStates.insert(_1st.toInt());
+		// Not solved yet
+		_expanded = 0;								// At the beginning, 1 Node is expanded: the root
+		var _1st = _pQueue.shift();					// Pops a node
+		var _newGuys = _1st.generateNeighbors();	// Generate its neighbors
+		var _pastStates = new Set();				// A set to save the visited nodes to prevent re-visiting
+		_pastStates.insert(_1st.toInt());			
 
-		sortedInsertionBFS(_newGuys);
+		sortedInsertionBFS(_newGuys);				// Merges the neighbors with the queue without unsorting
 
+		/* Stops when:
+		 * 	1. Finds the solution;
+		 * 	2. The queue is empty (searched the whole graph and there is no solution)!
+		 * 	3. Searched enough to know that there is no solution and it is just wasting time.
+		 * 	P.S. BFS is not good, so it always uses the theoretical limit.
+		 */
 		while ( (!_1st.board().finalState()) && (_pQueue !== []) && (_expanded < Problem.MAX_THEORETICAL) ) {
+			// Pops a Node
 			_1st = _pQueue.shift();
 
+			// This guy is a new Node!
 			if ( !_pastStates.searchElement(_1st.toInt()).found ) {
-				_pastStates.insert(_1st.toInt());
-				_newGuys = _1st.generateNeighbors();
+				_pastStates.insert(_1st.toInt());		// Now, it is not new anymore
+				_newGuys = _1st.generateNeighbors();	// Generates its neighbors
 
-				// Search and remove the neighbors that are already in the set of past states
+				// Search and remove the neighbors that are repeated nodes
 				for (var i = 0; i < _newGuys.length; i++) {
 					if ( _pastStates.searchElement(_newGuys[i].toInt()).found ) {
 						_newGuys.splice(i, 1);
 					}
 				}
 
+				// If there is still some new node among the neighbors, merge with the queue
 				if (_newGuys.length > 0)
 					{ sortedInsertionBFS(_newGuys); }
 			}
 			
+			// One more Node expanded
 			_expanded++;
 		}
 
-		// Solution not found
+		// Solution not found: the queue is over or the limit was reached
 		if ((_pQueue === []) || (_expanded === Problem.MAX_THEORETICAL)) {
 			_solved = false;
 			_solvable = false;
@@ -226,6 +250,7 @@ function Problem () {
 			_solved = true;
 			_steps = _1st.cost;
 
+			// Generates the solution by climbing the ancestors tree
 			var _goingUp = _1st;
 			_steps = 0;
 			while (_goingUp != _root) {
@@ -234,6 +259,7 @@ function Problem () {
 				_steps++;
 			}
 
+			// By climbing the tree, the solution obtained is inverted
 			_solution = _solution.split(" ").reverse().join(" ");
 
 			return true;

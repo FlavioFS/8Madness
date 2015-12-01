@@ -1,3 +1,4 @@
+/* Default */
 body {
 	background-color: black;
 	color: #AAA;
@@ -9,6 +10,7 @@ body {
     box-sizing: border-box;         /* Opera/IE 8+ */
 }
 
+/* The background of the game board */
 .board {
 	position: relative;
 	width: 380px;
@@ -21,7 +23,7 @@ body {
 	border-radius: 5%;
 }
 
-/* Board */
+/* The foreground (the pieces) of the game board */
 .piece {
 	position: absolute;
 	color: #3DD;
@@ -46,6 +48,7 @@ body {
 	-o-transition-timing-function: linear;
 }
 
+/* Regarding click-and-drag behavior */
 .droppable {
 	display: inline;
 }
@@ -58,12 +61,14 @@ body {
 	border: 4px dashed #CFC;
 }
 
+
+/* The piece 0 */
 .invisible {
 	opacity: 0;
 }
 
 
-/* End signal */
+/* Regarding the signal light */
 .signal {
 	background-color: #F55;
 	border-radius: 50%;
@@ -137,12 +142,13 @@ span {
 	margin: 5px 5px 0px 5px;
 }
 
-/* Instructions */
+
+/* Instructions panel */
 .iBox {
 	position: fixed;
 	color: #5d7;
 	font-family: "Comic Sans MS", cursive, sans-serif;
-	width: 20%;
+	width: 25%;
 	right: 0px;
 	top: 0px;
 	

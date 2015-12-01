@@ -1,6 +1,8 @@
 //////////////////////////////////////////////////
 //                    Utility                   //
 //////////////////////////////////////////////////
+
+// Updates the final state lamp
 function updateFinal () {
 	if ( View.loadBoard().equals(Board.FINAL_STATE) )
 		{ View.setFinal(true); }
@@ -77,6 +79,7 @@ var keylock = false;
 
 // Keypress detection
 function keyboard (evt) {
+	// Locks the keyboard when solving or animating
 	if (keylock) { return; }
 
 	evtKey = evt.which || evt.keyCode;
@@ -98,7 +101,7 @@ function keyboard (evt) {
 		if (View.solveBtnReady()) { solveAStar(); }
 	}
 
-	// Pressing WASD
+	// Press WASD moves the pieces from the board
 	else {
 		var _currentBoard = new Board( View.loadBoard() );
 		var _zero = _currentBoard.find(0);
@@ -117,20 +120,20 @@ function keyboard (evt) {
 //////////////////////////////////////////////////
 //                     Mouse                    //
 //////////////////////////////////////////////////
-function dragNdropSettings (argument) {
-	// Drag'n'drop
-	var draggable = $(".piece");
-	for (var i = 0; i < draggable.length; i++) {
-		draggable[i].addEventListener('dragstart', dragStart, false);
-		draggable[i].addEventListener('dragend', dragEnd, false);
-	};
 
-	var dropTarget = $(".piece");
-	for (var i = 0; i < dropTarget.length; i++) {
-		dropTarget[i].addEventListener('dragenter', dragEnter, false);
-		dropTarget[i].addEventListener('dragover' , dragOver , false);
-		dropTarget[i].addEventListener('dragleave', dragLeave, false);
-		dropTarget[i].addEventListener('drop'     , drop     , false);
+// Drag'n'drop
+// Allows the pieces to be repositioned by click-and-drag mechanics
+// The changes are applied to the view ONLY
+function dragNdropSettings (argument) {
+	// Setting the event listeners
+	var _pieces = $(".piece");
+	for (var i = 0; i < _pieces.length; i++) {
+		_pieces[i].addEventListener('dragstart', dragStart, false);
+		_pieces[i].addEventListener('dragend', dragEnd, false);
+		_pieces[i].addEventListener('dragenter', dragEnter, false);
+		_pieces[i].addEventListener('dragover' , dragOver , false);
+		_pieces[i].addEventListener('dragleave', dragLeave, false);
+		_pieces[i].addEventListener('drop'     , drop     , false);
 	};
 
 	// Event Handlers
@@ -159,6 +162,8 @@ function dragNdropSettings (argument) {
 	};
 
 	function drop (event) {
+		if (keylock) {return true;};
+
 		var data = event.dataTransfer.getData('text/html');
 		$(event.target).removeClass("dropping");
 		var targetValue = event.target.innerHTML;
@@ -170,8 +175,7 @@ function dragNdropSettings (argument) {
 
 			// Swapping squares marked with "data" and "targetValue"
 			View.swap(data, targetValue);
-
-			updateFinal();
+			updateFinal(); // Updating the final state lamp
 
 			event.preventDefault();
 			return false;
@@ -190,35 +194,37 @@ var _puzzle;
 
 // Solve Button
 function solveAStar () {
-	keylock = true;
+	keylock = true;	// Denies the use of the keyboard and drag-and-drop
 	_puzzle = new Problem ();
 
-	// Before starting calculation, prevents more requests
+	// Before starting calculation, sets a message to the user and prevents more requests
 	View.setSolution("8Madness is thinking. Puny humans are instructed to w8!<br>Do not touch this keyboard!<br>Maximum waiting time: 3 minutes.");
 	View.setSolveBtnEnabled(false);
 	View.setAnimateBtnEnabled(false);
 	
+	// Waits for the view to update and starts the calculation
 	setTimeout(
 		function () {
+			// Stopwatch measures the time required to solve the puzzle
 			var _timer = new Stopwatch();
 			_timer.start();
 			_puzzle.solveAStar();
 			_timer.stop();
 
+			// Updates the solution details at the GUI
 			View.setSolution(_puzzle.solution());
 			View.setElapsedTime(_timer.getMilliseconds());
 			View.setNodesExpanded(_puzzle.expanded());
 			updateFinal();
 
 			if (!_puzzle.solvable()) {
-				// Allowing solve button - preventing more requests
+				// Unsolvable: allows solution requests but not the animation
 				View.setSolveBtnEnabled(true);
 				View.setAnimateBtnEnabled(false);
 				keylock = false;
 			}
 			else {
-				// Allowing solve button - preventing more requests
-				// It is also possible to animate the valid solution
+				// Solved: allows solution requests and it is also possible to animate the valid solution
 				View.setSolveBtnEnabled(true);
 				View.setAnimateBtnEnabled(true);
 				View.setSolutionSize(_puzzle.stepCount());
@@ -230,35 +236,37 @@ function solveAStar () {
 }
 
 function solveBFS () {
-	keylock = true;
+	keylock = true;	// Denies the use of the keyboard and drag-and-drop
 	_puzzle = new Problem ();
 
-	// Before starting calculation, prevents more requests
+	// Before starting calculation, sets a message to the user and prevents more requests
 	View.setSolution("8Madness is thinking. Puny humans are instructed to w8!<br>Do not touch this keyboard!<br>Maximum waiting time: 4 minutes.");
 	View.setSolveBtnEnabled(false);
 	View.setAnimateBtnEnabled(false);
 	
+	// Waits for the view to update and starts the calculation
 	setTimeout(
 		function () {
+			// Stopwatch measures the time required to solve the puzzle
 			var _timer = new Stopwatch();
 			_timer.start();
 			_puzzle.solveBFS();
 			_timer.stop();
 
+			// Updates the solution details at the GUI
 			View.setSolution(_puzzle.solution());
 			View.setElapsedTime(_timer.getMilliseconds());
 			View.setNodesExpanded(_puzzle.expanded());
 			updateFinal();
 
 			if (!_puzzle.solvable()) {
-				// Allowing solve button - preventing more requests
+				// Unsolvable: allows solution requests but not the animation
 				View.setSolveBtnEnabled(true);
 				View.setAnimateBtnEnabled(false);
 				keylock = false;
 			}
 			else {
-				// Allowing solve button - preventing more requests
-				// It is also possible to animate the valid solution
+				// Solved: allows solution requests and it is also possible to animate the valid solution
 				View.setSolveBtnEnabled(true);
 				View.setAnimateBtnEnabled(true);
 				View.setSolutionSize(_puzzle.stepCount());
@@ -271,7 +279,11 @@ function solveBFS () {
 
 // Animate button
 function animation () {
+	// Animated when there is a solution
 	if (_puzzle && _puzzle.solved()) {
+		// Denies the use of keyboard or drag-and-drop during the animation process
+		keylock = true;
+		
 		var _solution = _puzzle.solution().split(" ");
 		var _currentBoard = new Board( View.loadBoard() );
 		var _zero = _currentBoard.find(0);
@@ -279,6 +291,7 @@ function animation () {
 
 		// Highlighting and Motion - Timeout forces it to be recursive
 		function highlightAndMotion (i) {
+
 			// Highlight
 			var _displayNow = _solution.slice();
 			_displayNow[i] = "<span>" + _displayNow[i] + "</span>";
@@ -296,13 +309,16 @@ function animation () {
 			if (i < _solution.length - 1) {
 				setTimeout(
 					function () { highlightAndMotion(i+1); },
-					1000
+					500
 				);
 			}
+
+			// Recusrion ends here
 			else {
 				View.setSolution(_solution.join(" "));
 				View.setAnimateBtnEnabled(false);
 				updateFinal();
+				keylock = false;
 			}
 		}
 
@@ -311,7 +327,7 @@ function animation () {
 }
 
 
-// Instructions div
+// Retracts/expands the instructions panel
 function toggleInstructions () {
 	View.iBoxToggle();
 }
@@ -319,6 +335,7 @@ function toggleInstructions () {
 //////////////////////////////////////////////////
 //                      Main                    //
 //////////////////////////////////////////////////
+// Sets up the starting state
 function main () {
 	View.loadBoard();
 	dragNdropSettings();
