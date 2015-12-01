@@ -139,25 +139,30 @@ function dragNdropSettings (argument) {
 	// Event Handlers
 	// Drag
 	function dragStart (event) {
+		if (keylock) {return true;};
 		event.dataTransfer.setData("text/html", event.target.innerHTML);
 		$(event.target).addClass("dragging");
 	};
 
 	function dragEnd (event) {
+		if (keylock) {return true;};
 		$(event.target).removeClass("dragging");
 	};
 
 	// Drop
 	function dragEnter (event) {
+		if (keylock) {return true;};
 		$(event.target).addClass("dropping");
 	};
 
 	function dragOver (event) {
+		if (keylock) {return true;};
 		event.preventDefault();
 		return false;
 	};
 
 	function dragLeave (event) {
+		if (keylock) {return true;};
 		$(event.target).removeClass("dropping");
 	};
 
