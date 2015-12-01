@@ -203,7 +203,7 @@ function solveAStar () {
 	_puzzle = new Problem ();
 
 	// Before starting calculation, sets a message to the user and prevents more requests
-	View.setSolution("8Madness is thinking. Puny humans are instructed to w8!<br>Do not touch this keyboard!<br>Maximum waiting time: 3 minutes.");
+	View.setSolutionAStar("8Madness is thinking. Puny humans are instructed to w8!<br>Do not touch this keyboard!<br>Maximum waiting time: 3 minutes.");
 	View.setSolveBtnEnabled(false);
 	View.setAnimateBtnEnabled(false);
 	
@@ -217,9 +217,9 @@ function solveAStar () {
 			_timer.stop();
 
 			// Updates the solution details at the GUI
-			View.setSolution(_puzzle.solution());
-			View.setElapsedTime(_timer.getMilliseconds());
-			View.setNodesExpanded(_puzzle.expanded());
+			View.setSolutionAStar(_puzzle.solution());
+			View.setElapsedTimeAStar(_timer.getMilliseconds());
+			View.setNodesExpandedAStar(_puzzle.expanded());
 			updateFinal();
 
 			if (!_puzzle.solvable()) {
@@ -232,7 +232,7 @@ function solveAStar () {
 				// Solved: allows solution requests and it is also possible to animate the valid solution
 				View.setSolveBtnEnabled(true);
 				View.setAnimateBtnEnabled(true);
-				View.setSolutionSize(_puzzle.stepCount());
+				View.setSolutionSizeBFS(_puzzle.stepCount());
 				keylock = false;
 			}
 		},
@@ -245,7 +245,7 @@ function solveBFS () {
 	_puzzle = new Problem ();
 
 	// Before starting calculation, sets a message to the user and prevents more requests
-	View.setSolution("8Madness is thinking. Puny humans are instructed to w8!<br>Do not touch this keyboard!<br>Maximum waiting time: 4 minutes.");
+	View.setSolutionBFS("8Madness is thinking. Puny humans are instructed to w8!<br>Do not touch this keyboard!<br>Maximum waiting time: 4 minutes.");
 	View.setSolveBtnEnabled(false);
 	View.setAnimateBtnEnabled(false);
 	
@@ -259,9 +259,9 @@ function solveBFS () {
 			_timer.stop();
 
 			// Updates the solution details at the GUI
-			View.setSolution(_puzzle.solution());
-			View.setElapsedTime(_timer.getMilliseconds());
-			View.setNodesExpanded(_puzzle.expanded());
+			View.setSolutionBFS(_puzzle.solution());
+			View.setElapsedTimeBFS(_timer.getMilliseconds());
+			View.setNodesExpandedBFS(_puzzle.expanded());
 			updateFinal();
 
 			if (!_puzzle.solvable()) {
@@ -274,7 +274,7 @@ function solveBFS () {
 				// Solved: allows solution requests and it is also possible to animate the valid solution
 				View.setSolveBtnEnabled(true);
 				View.setAnimateBtnEnabled(true);
-				View.setSolutionSize(_puzzle.stepCount());
+				View.setSolutionSizeBFS(_puzzle.stepCount());
 				keylock = false;
 			}
 		},

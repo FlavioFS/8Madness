@@ -101,23 +101,35 @@ View.setFinal = function (bool) {
 };
 
 // [1.7] - Solution div's inner text
-View.setSolution = function (stringArg) {
+View.setSolutionAStar = function (stringArg) {
 	document.getElementsByClassName('solution')[0].innerHTML = stringArg;
+};
+View.setSolutionBFS = function (stringArg) {
+	document.getElementsByClassName('solution')[1].innerHTML = stringArg;
 };
 
 // [1.8] - Elapsed Time
-View.setElapsedTime = function (msTime) {
+View.setElapsedTimeAStar = function (msTime) {
 	document.getElementsByClassName('info')[0].innerHTML = "Elapsed Time: " + msTime + " ms";
+};
+View.setElapsedTimeBFS = function (msTime) {
+	document.getElementsByClassName('info')[3].innerHTML = "Elapsed Time: " + msTime + " ms";
 };
 
 // [1.9] - Nodes Expanded
-View.setNodesExpanded = function (nodeCount) {
+View.setNodesExpandedAStar = function (nodeCount) {
 	document.getElementsByClassName('info')[1].innerHTML = "Nodes Expanded: " + nodeCount;
+};
+View.setNodesExpandedBFS = function (nodeCount) {
+	document.getElementsByClassName('info')[4].innerHTML = "Nodes Expanded: " + nodeCount;
 };
 
 // [1.10] - Amount of steps the solution requires
-View.setSolutionSize = function (size) {
+View.setSolutionSizeAStar = function (size) {
 	document.getElementsByClassName('info')[2].innerHTML = "Solution Size: " + size;
+};
+View.setSolutionSizeBFS = function (size) {
+	document.getElementsByClassName('info')[5].innerHTML = "Solution Size: " + size;
 };
 
 // [1.11] - Toggles Instruction Box
