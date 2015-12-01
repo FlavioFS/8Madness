@@ -119,3 +119,19 @@ View.setNodesExpanded = function (nodeCount) {
 View.setSolutionSize = function (size) {
 	document.getElementsByClassName('info')[2].innerHTML = "Solution Size: " + size;
 };
+
+// [1.11] - Toggles Instruction Box
+View.iBoxToggle = function () {
+	var _iBox = document.getElementsByClassName("iBox")[0];
+	var _instructionsRight = {shown:"0px", hidden: ("-" + _iBox.offsetWidth*0.95 + "px")};
+
+	// If it is shown, hide it
+	if (_iBox.style.right === _instructionsRight.shown || _iBox.style.right === "") {
+		_iBox.style.right = _instructionsRight.hidden;
+	}
+
+	// If it is hidden, show it
+	else {
+		_iBox.style.right = _instructionsRight.shown;	
+	}
+};

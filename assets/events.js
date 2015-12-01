@@ -311,6 +311,11 @@ function animation () {
 }
 
 
+// Instructions div
+function toggleInstructions () {
+	View.iBoxToggle();
+}
+
 //////////////////////////////////////////////////
 //                      Main                    //
 //////////////////////////////////////////////////

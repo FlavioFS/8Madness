@@ -136,3 +136,31 @@ span {
 .info {
 	margin: 5px 5px 0px 5px;
 }
+
+/* Instructions */
+.iBox {
+	position: fixed;
+	color: #5d7;
+	font-family: "Comic Sans MS", cursive, sans-serif;
+	width: 20%;
+	right: 0px;
+	top: 0px;
+	
+	transition: right 0.3s;
+	-moz-transition: right 0.3s;
+	-webkit-transition: right 0.3s;
+	-o-transition: right 0.3s;
+
+	transition-timing-function: linear;
+	-moz-transition-timing-function: linear;
+	-webkit-transition-timing-function: linear;
+	-o-transition-timing-function: linear;
+}
+
+.instructions {
+	display: block;
+	background-color: #111;
+	max-width: 100%;
+	text-align: center;
+	border: 3px ridge #3d3;
+}
