@@ -238,7 +238,7 @@ function solveAStar () {
 				// Solved: allows solution requests and it is also possible to animate the valid solution
 				View.setSolveBtnEnabled(true);
 				View.setAnimateBtnEnabled(true);
-				View.setSolutionSizeBFS(_puzzle.stepCount());
+				View.setSolutionSizeAStar(_puzzle.stepCount());
 				keylock = false;
 			}
 		},
