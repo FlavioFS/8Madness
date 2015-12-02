@@ -211,6 +211,7 @@ function solveAStar () {
 	View.setSolutionAStar("8Madness is thinking. Puny humans are instructed to w8!<br>Do not touch this keyboard!<br>Maximum waiting time: 3 minutes.");
 	View.setSolveBtnEnabled(false);
 	View.setAnimateBtnEnabled(false);
+	View.setLastAlgorithm("A*");
 	
 	// Waits for the view to update and starts the calculation
 	setTimeout(
@@ -253,6 +254,7 @@ function solveBFS () {
 	View.setSolutionBFS("8Madness is thinking. Puny humans are instructed to w8!<br>Do not touch this keyboard!<br>Maximum waiting time: 4 minutes.");
 	View.setSolveBtnEnabled(false);
 	View.setAnimateBtnEnabled(false);
+	View.setLastAlgorithm("BFS");
 	
 	// Waits for the view to update and starts the calculation
 	setTimeout(
@@ -307,7 +309,16 @@ function animation () {
 			_displayNow[i] = "<span>" + _displayNow[i] + "</span>";
 			_displayNow = _displayNow.join(" ");
 
-			View.setSolution(_displayNow);
+			// Which algorithm solved this?
+			var _lastAlgorithm = View.getLastAlgorithm();
+			var _setSolutionFunc;
+			if (_lastAlgorithm == "A*") {
+				_setSolutionFunc = View.setSolutionAStar;
+			}
+			else if (_lastAlgorithm == "BFS") {
+				_setSolutionFunc = View.setSolutionBFS;
+			}
+			_setSolutionFunc(_displayNow);
 
 			// Motion
 			if      (_solution[i] === View.ARROWS.U) { swapUp(_currentBoard, _zero);    }
@@ -325,7 +336,7 @@ function animation () {
 
 			// Recusrion ends here
 			else {
-				View.setSolution(_solution.join(" "));
+				_setSolutionFunc(_solution.join(" "));
 				View.setAnimateBtnEnabled(false);
 				updateFinal();
 				keylock = false;

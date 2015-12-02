@@ -11,7 +11,7 @@
 function View () {};
 View.COORDINATES = ["20px", "140px", "260px"];
 View.ARROWS = {U: "\u21E7", D: "\u21E9", L: "\u21E6", R: "\u21E8"};
-
+View._lastAlgorithm;
 
 /*/////////////////////////////////////////
 			     Read-only
@@ -132,7 +132,18 @@ View.setSolutionSizeBFS = function (size) {
 	document.getElementsByClassName('info')[5].innerHTML = "Solution Size: " + size;
 };
 
-// [1.11] - Toggles Instruction Box
+// [1.11] - Which algorithm solved the puzzle?
+View.getLastAlgorithm = function () {
+	return View._lastAlgorithm;
+};
+
+View.setLastAlgorithm = function (lastAlg) {
+	if (lastAlg == "A*" || lastAlg == "BFS") {
+		View._lastAlgorithm = lastAlg
+	}
+};
+
+// [1.12] - Toggles Instruction Box
 View.iBoxToggle = function () {
 	var _iBox = document.getElementsByClassName("iBox")[0];
 	var _instructionsRight = {shown:"0px", hidden: ("-" + _iBox.offsetWidth*0.95 + "px")};
@@ -144,6 +155,6 @@ View.iBoxToggle = function () {
 
 	// If it is hidden, show it
 	else {
-		_iBox.style.right = _instructionsRight.shown;	
+		_iBox.style.right = _instructionsRight.shown;
 	}
 };
