@@ -93,7 +93,8 @@ function keyboard (evt) {
 		keyS 	 = 83,
 		keyD 	 = 68,
 		key1	 = 49,
-		key3	 = 51;
+		key3	 = 51,
+		keyEnter = 13;
 
 
 	// Pressing Return
@@ -105,6 +106,10 @@ function keyboard (evt) {
 	else if ((evtKey === key3) && (!keylock)) {
 		if (View.solveBtnReady()) { solveBFS(); }
 	}
+
+	else if ((evtKey === keyEnter) && (!keylock)) {
+		if (View.animateBtnReady()) { animation(); }
+	}	
 
 	// Press WASD moves the pieces from the board
 	else {

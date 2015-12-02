@@ -49,7 +49,9 @@ View.loadBoard = function () {
 View.solveBtnReady = function () {
 	return !document.getElementsByClassName("solveBtn")[0].disabled;
 };
-
+View.animateBtnReady = function () {
+	return !document.getElementsByClassName("animateBtn")[0].disabled;
+};
 
 
 /*/////////////////////////////////////////
