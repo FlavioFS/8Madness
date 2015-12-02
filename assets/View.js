@@ -45,7 +45,7 @@ View.loadBoard = function () {
 	return squaresArray;
 };
 
-// [1.2] Is the solve button ready?
+// [1.2] Is the solve/animate button ready?
 View.solveBtnReady = function () {
 	return !document.getElementsByClassName("solveBtn")[0].disabled;
 };

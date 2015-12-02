@@ -107,6 +107,7 @@ function keyboard (evt) {
 		if (View.solveBtnReady()) { solveBFS(); }
 	}
 
+	// Animation hotkey
 	else if ((evtKey === keyEnter) && (!keylock)) {
 		if (View.animateBtnReady()) { animation(); }
 	}	
