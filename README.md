@@ -2,8 +2,10 @@
 
 > :warning: This repo was ported from Bitbucket!
 
-# [Live Demo here](https://flaviofs.github.io/8Madness/)
-[![Preview image failed to load](assets/preview.gif)](https://flaviofs.github.io/8Madness/)
+# <a href="https://flaviofs.github.io/8Madness/" target="_blank"> Live Demo here </a>
+<a href="https://flaviofs.github.io/8Madness/" target="_blank">
+	![Preview image failed to load](assets/preview.gif)]
+</a>
 
 ## Description
 Computer Science Bachelor's degree assignments [Aug ~ Dec 2015].
