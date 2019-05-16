@@ -1,4 +1,4 @@
-# Artificial Intelligence Winter Class (2015)
+# 🤖 Artificial Intelligence Winter Class (2015)
 
 > :warning: This repo was ported from Bitbucket!
 
