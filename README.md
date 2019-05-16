@@ -1,9 +1,9 @@
-# Artificial Intelligence Summer Class (2015)
+# Artificial Intelligence Winter Class (2015)
 
 > :warning: This repo was ported from Bitbucket!
 
 ## Description
-Computer Science Bachelor's degree assignments [January ~ May 2015].
+Computer Science Bachelor's degree assignments [Aug ~ Dec 2015].
 
 ## Classes:
  - Machine Learning
