@@ -2,7 +2,7 @@
 
 > :warning: This repo was ported from Bitbucket!
 
-# <a href="https://flaviofs.github.io/8Madness/" target="_blank"> Live Demo here </a>
+# [:arrow_forward: Live Demo here](https://flaviofs.github.io/8Madness/)
 <a href="https://flaviofs.github.io/8Madness/" target="_blank">
 	<img src="assets/preview.gif" alt="Preview image failed to load"/>
 </a>
