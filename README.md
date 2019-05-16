@@ -1,4 +1,4 @@
-# 🤖 Artificial Intelligence Winter Class (2015)
+# :robot: Artificial Intelligence Winter Class (2015)
 
 > :warning: This repo was ported from Bitbucket!
 
@@ -7,22 +7,22 @@
 	<img src="assets/preview.gif" alt="Preview image failed to load"/>
 </a>
 
-## Description
+## :book: Description
 Computer Science Bachelor's degree assignments [Aug ~ Dec 2015].
 
-## Classes:
+## :mortar_board: Classes
  - Machine Learning
  - Automated Learning
 
-## Technology
+## :computer: Technology
  - Javascript
  - Implementations and solutions from scratch
  - Jquery only
  - No Bootsrap, No materials, No CSS templates or frameworks
 
-## Contents
+## :scroll: Contents
  - A* search
  - BFS search
 
-## Problems solved
+## :unlock: Problems solved
  - 8-piece puzzle auto-solution + animations
