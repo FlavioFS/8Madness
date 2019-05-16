@@ -4,7 +4,7 @@
 
 # <a href="https://flaviofs.github.io/8Madness/" target="_blank"> Live Demo here </a>
 <a href="https://flaviofs.github.io/8Madness/" target="_blank">
-	![Preview image failed to load](assets/preview.gif)]
+	<img src="assets/preview.gif" alt="Preview image failed to load"/>
 </a>
 
 ## Description
