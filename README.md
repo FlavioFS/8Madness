@@ -3,4 +3,4 @@
 > :warning: This repo was ported from Bitbucket!
 
 ## Description
-Computer Science Bachelor's degree assignments [January ~ July 2016].
+Computer Science Bachelor's degree assignments [January ~ May 2015].
